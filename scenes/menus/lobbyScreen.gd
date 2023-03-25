@@ -4,19 +4,18 @@ extends MarginContainer
 const MAX_PLAYERS = 2
 const PORT = 5409
 
-@onready var user = $PanelContainer/MarginContainer/Start/GridContainer/User
-@onready var color_name = $PanelContainer/MarginContainer/Start/GridContainer/ColorName
-@onready var ip = $PanelContainer/MarginContainer/Start/GridContainer/IP
+@onready var user = $Start/MarginContainer/Start/GridContainer/User
+@onready var color_name = $Start/MarginContainer/Start/GridContainer/ColorName
+@onready var ip = $Start/MarginContainer/Start/GridContainer/IP
 
-@onready var host = $PanelContainer/MarginContainer/Start/HBoxContainer/Host
-@onready var join = $PanelContainer/MarginContainer/Start/HBoxContainer/Join
+@onready var host = $Start/MarginContainer/Start/HBoxContainer/Host
+@onready var join = $Start/MarginContainer/Start/HBoxContainer/Join
 
-@onready var start = $PanelContainer/MarginContainer/Start
-@onready var pending = $PanelContainer/MarginContainer/Pending
-@onready var players_list = $PanelContainer/MarginContainer/Pending/PanelContainer/PlayersList
+@onready var start = $Start
+@onready var pending = $Pending
 
-@onready var cancel = $PanelContainer/MarginContainer/Pending/HBoxContainer/Cancel
-@onready var play = $PanelContainer/MarginContainer/Pending/HBoxContainer/Play
+@onready var players_list = $Pending/PanelContainer2/MarginContainer/Pending/PanelContainer/PlayersList
+@onready var play = $Pending/HBoxContainer/Play
 
 # { id: true }
 var status = {1 : false}

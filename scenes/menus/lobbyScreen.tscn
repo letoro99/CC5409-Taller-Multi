@@ -10,90 +10,108 @@ offset_left = -1.0
 offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 script = ExtResource("1_lbtft")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="Start" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Start"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="Start" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
-visible = false
+[node name="Start" type="VBoxContainer" parent="Start/MarginContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/Start"]
+[node name="GridContainer" type="GridContainer" parent="Start/MarginContainer/Start"]
 layout_mode = 2
 size_flags_horizontal = 4
 columns = 3
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/Start/GridContainer"]
+[node name="Label" type="Label" parent="Start/MarginContainer/Start/GridContainer"]
 layout_mode = 2
 text = "Name: "
 
-[node name="User" type="LineEdit" parent="PanelContainer/MarginContainer/Start/GridContainer"]
+[node name="User" type="LineEdit" parent="Start/MarginContainer/Start/GridContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 alignment = 3
 max_length = 20
 
-[node name="ColorName" type="ColorPickerButton" parent="PanelContainer/MarginContainer/Start/GridContainer"]
+[node name="ColorName" type="ColorPickerButton" parent="Start/MarginContainer/Start/GridContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "A"
 color = Color(1, 1, 1, 1)
 
-[node name="Label2" type="Label" parent="PanelContainer/MarginContainer/Start/GridContainer"]
+[node name="Label2" type="Label" parent="Start/MarginContainer/Start/GridContainer"]
 layout_mode = 2
 text = "IP: "
 
-[node name="IP" type="LineEdit" parent="PanelContainer/MarginContainer/Start/GridContainer"]
+[node name="IP" type="LineEdit" parent="Start/MarginContainer/Start/GridContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "127.0.0.1"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/Start"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Start/MarginContainer/Start"]
 layout_mode = 2
 alignment = 1
 
-[node name="Host" type="Button" parent="PanelContainer/MarginContainer/Start/HBoxContainer"]
+[node name="Host" type="Button" parent="Start/MarginContainer/Start/HBoxContainer"]
 layout_mode = 2
 text = "HOST"
 
-[node name="Join" type="Button" parent="PanelContainer/MarginContainer/Start/HBoxContainer"]
+[node name="Join" type="Button" parent="Start/MarginContainer/Start/HBoxContainer"]
 layout_mode = 2
 text = "JOIN"
 
-[node name="Pending" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="Pending" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/Pending"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Pending"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 2
+
+[node name="Play" type="Button" parent="Pending/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PLAY!!"
+
+[node name="PanelContainer2" type="PanelContainer" parent="Pending"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Pending/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="Pending" type="VBoxContainer" parent="Pending/PanelContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="Pending/PanelContainer2/MarginContainer/Pending"]
 layout_mode = 2
 text = "Players: "
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/Pending"]
+[node name="PanelContainer" type="PanelContainer" parent="Pending/PanelContainer2/MarginContainer/Pending"]
 layout_mode = 2
 
-[node name="PlayersList" type="VBoxContainer" parent="PanelContainer/MarginContainer/Pending/PanelContainer"]
+[node name="PlayersList" type="VBoxContainer" parent="Pending/PanelContainer2/MarginContainer/Pending/PanelContainer"]
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/Pending"]
-layout_mode = 2
-alignment = 1
-
-[node name="Cancel" type="Button" parent="PanelContainer/MarginContainer/Pending/HBoxContainer"]
-layout_mode = 2
-text = "Cancel
-"
-
-[node name="Play" type="Button" parent="PanelContainer/MarginContainer/Pending/HBoxContainer"]
-layout_mode = 2
-text = "PLAY!!"
