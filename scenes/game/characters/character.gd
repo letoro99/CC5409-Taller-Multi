@@ -3,8 +3,8 @@ extends CharacterBody2D
 # Constants
 const SPEED = 400.0
 const JUMP_VELOCITY = -400.0
-const ACCELERATION = 30
-const DECELERATION = 5
+const ACCELERATION = 35
+const DECELERATION = 2
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # Character Variable

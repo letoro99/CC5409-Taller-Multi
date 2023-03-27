@@ -4,22 +4,46 @@
 [ext_resource type="PackedScene" uid="uid://cgmsb2w2b8xoq" path="res://scenes/game/characters/character.tscn" id="2_x0e3i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mv8ea"]
-size = Vector2(1159, 127)
+size = Vector2(1159, 74)
 
 [node name="main" type="Node2D"]
 
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(40, 453)
+rotation = 1.5708
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+shape = SubResource("RectangleShape2D_mv8ea")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(9, 0.5)
+texture = ExtResource("1_rb0hy")
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(566, 578)
+position = Vector2(576, 610)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(12.5, 0.5)
 shape = SubResource("RectangleShape2D_mv8ea")
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
 modulate = Color(0, 0, 0, 1)
-position = Vector2(14, 0)
-scale = Vector2(9.03125, 1)
+scale = Vector2(9, 0.5)
+texture = ExtResource("1_rb0hy")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(1119, 487)
+rotation = 1.5708
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_mv8ea")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(9, 0.5)
 texture = ExtResource("1_rb0hy")
 
 [node name="character" parent="." instance=ExtResource("2_x0e3i")]

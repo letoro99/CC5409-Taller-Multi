@@ -65,6 +65,8 @@ func _on_connection_failed() -> void:
 func _on_peer_connected(id: int) -> void:
 	Debug.print("peer_connected %d" % id)
 	rpc_id(id, "send_info", { "name": user.text , "color_name": color_name.get_picker().color})
+	if multiplayer.is_server():
+		status[id] = false
 
 func _on_peer_disconnected(id: int) -> void:
 	Debug.print("peer_disconnected %d" % id)
@@ -107,7 +109,7 @@ func player_ready():
 	var id = multiplayer.get_remote_sender_id()
 	_paint_ready(id)
 	if multiplayer.is_server():
-		status[id] = true
+		status[id] = not status[id]
 		var all_ok = true
 		for ok in status.values():
 			all_ok = all_ok and ok
