@@ -7,8 +7,12 @@ const ACCELERATION = 35
 const DECELERATION = 2
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+# RigidBody2D node for testing REMOVE IN THE FUTURE
+@onready var bola = preload("res://scenes/game/portals/bola.tscn")
+
 # Character Variable
 var directionMove : Vector2 
+var angleVelocity : float = 0.0 
 
 func _handle_movement_input() -> void:
 	directionMove = Vector2.ZERO
@@ -20,9 +24,19 @@ func _handle_movement_input() -> void:
 		
 	if Input.is_action_pressed("jump"):
 		directionMove += Vector2.UP
+		
+	if Input.is_action_just_pressed("shoot"):
+		var element = bola.instantiate()
+		element.global_position = get_global_mouse_position()
+		get_tree().root.get_node("main").add_child(element)
 
 func _handle_inputs() -> void:
 	_handle_movement_input()
+	
+func transportate(in_portal: Portal, out_portal: Portal):
+	global_position = out_portal.global_position
+	var inverse_inPortal_normal = in_portal.normal_portal
+	velocity = velocity.rotated(inverse_inPortal_normal.angle_to(out_portal.normal_portal) + deg_to_rad(90))
 
 func _physics_process(delta):
 	_handle_inputs()
@@ -32,7 +46,7 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 
 	# Handle Jump.
-	if directionMove.y != 0 and is_on_floor():
+	if is_on_floor() and directionMove.y != 0:
 		velocity.y = JUMP_VELOCITY
 	
 	# Using only the horizontal velocity, sample towards the input.

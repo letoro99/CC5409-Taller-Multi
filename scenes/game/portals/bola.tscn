@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c05fn1pe3drb6"]
+
+[ext_resource type="Texture2D" uid="uid://28o033rodqwi" path="res://icon.svg" id="1_2hl2e"]
+[ext_resource type="Script" path="res://scenes/game/portals/bola.gd" id="1_uo4jn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lviod"]
+radius = 25.02
+
+[node name="bola" type="RigidBody2D"]
+script = ExtResource("1_uo4jn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lviod")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_2hl2e")

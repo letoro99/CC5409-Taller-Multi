@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://db2u68ln3gbvr"]
+[gd_scene load_steps=5 format=3 uid="uid://db2u68ln3gbvr"]
 
 [ext_resource type="Texture2D" uid="uid://28o033rodqwi" path="res://icon.svg" id="1_rb0hy"]
 [ext_resource type="PackedScene" uid="uid://cgmsb2w2b8xoq" path="res://scenes/game/characters/character.tscn" id="2_x0e3i"]
+[ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="3_va0dv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mv8ea"]
 size = Vector2(1159, 74)
@@ -48,3 +49,29 @@ texture = ExtResource("1_rb0hy")
 
 [node name="character" parent="." instance=ExtResource("2_x0e3i")]
 position = Vector2(576, 413)
+
+[node name="portal" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+position = Vector2(166, 445)
+another_portal = NodePath("../portal2")
+metadata/_edit_group_ = true
+
+[node name="portal2" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+position = Vector2(359, 244)
+rotation = 1.5708
+another_portal = NodePath("../portal")
+normal_portal = Vector2(0, 1)
+metadata/_edit_group_ = true
+
+[node name="portal3" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+position = Vector2(1036, 402)
+rotation = 3.14159
+another_portal = NodePath("../portal4")
+normal_portal = Vector2(-1, 0)
+metadata/_edit_group_ = true
+
+[node name="portal4" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+position = Vector2(848, 528)
+rotation = -1.5708
+another_portal = NodePath("../portal3")
+normal_portal = Vector2(0, 1)
+metadata/_edit_group_ = true
