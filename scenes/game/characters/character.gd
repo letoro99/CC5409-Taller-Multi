@@ -35,8 +35,9 @@ func _handle_inputs() -> void:
 	
 func transportate(in_portal: Portal, out_portal: Portal):
 	global_position = out_portal.global_position
-	var inverse_inPortal_normal = in_portal.normal_portal
-	velocity = velocity.rotated(inverse_inPortal_normal.angle_to(out_portal.normal_portal) + deg_to_rad(90))
+	if in_portal.normal_portal + out_portal.normal_portal != Vector2.ZERO:
+		var magnitude = 1.5 * velocity.length()
+		velocity = out_portal.normal_portal * magnitude
 
 func _physics_process(delta):
 	_handle_inputs()
@@ -46,7 +47,7 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 
 	# Handle Jump.
-	if is_on_floor() and directionMove.y != 0:
+	if  directionMove.y != 0:
 		velocity.y = JUMP_VELOCITY
 	
 	# Using only the horizontal velocity, sample towards the input.
