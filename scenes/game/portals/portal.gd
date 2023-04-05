@@ -22,7 +22,6 @@ func on_area_body_entered(body: Node2D) -> void:
 		disabling_portal()
 		another_portal.disabling_portal()		
 		body.transportate(self, another_portal)
-		
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
