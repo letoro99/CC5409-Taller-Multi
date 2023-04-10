@@ -16,7 +16,6 @@ func _integrate_forces(physics_state: PhysicsDirectBodyState2D):
 	if isTeleporting:
 		var exitSpeed = max(abs(linear_velocity.x), abs(linear_velocity.y))
 		linear_velocity = Vector2.ZERO
-		prints("diffPos: ", diffPositon)
 		apply_central_impulse(outPortal.normal_portal * exitSpeed)
 		physics_state.transform = Transform2D(0.0, outPortal.global_position + diffPositon)
 		isTeleporting = false

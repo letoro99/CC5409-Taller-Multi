@@ -10,7 +10,7 @@ var canTeleport : bool = true
 
 @export var another_portal : Portal
 @export var normal_portal : Vector2 = Vector2(1,0)
-@export var time_portal_disable : float = 0.4
+@export var time_portal_disable : float = 0.2
 
 func disabling_portal():
 	canTeleport = false

@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://scenes/game/portals/portal.gd" id="1_r583i"]
 [ext_resource type="Texture2D" uid="uid://cgjqljlrgw3hh" path="res://assets/portals/Green Portal Sprite Sheet.png" id="2_fnnle"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3sq2s"]
-radius = 18.0
-height = 178.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8xtlr"]
+radius = 14.0
+height = 164.0
 
 [node name="portal" type="Node2D"]
 script = ExtResource("1_r583i")
@@ -24,4 +24,4 @@ vframes = 3
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CapsuleShape2D_3sq2s")
+shape = SubResource("CapsuleShape2D_8xtlr")

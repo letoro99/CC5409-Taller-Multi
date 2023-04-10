@@ -47,7 +47,7 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 
 	# Handle Jump.
-	if  directionMove.y != 0:
+	if is_on_floor() and directionMove.y != 0:
 		velocity.y = JUMP_VELOCITY
 	
 	# Using only the horizontal velocity, sample towards the input.
