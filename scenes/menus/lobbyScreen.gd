@@ -1,8 +1,8 @@
 extends MarginContainer
 
 
-const MAX_PLAYERS = 2
-const PORT = 5409
+const MAX_PLAYERS = 4
+const PORT = 5000
 
 @onready var user = $Start/MarginContainer/Start/GridContainer/User
 @onready var color_name = $Start/MarginContainer/Start/GridContainer/ColorName
@@ -33,12 +33,17 @@ func _ready():
 	user.text = OS.get_environment("USERNAME")
 	
 	play.pressed.connect(_on_play_pressed)
+	
+	Game.upnp_completed.connect(_on_upnp_completed)
 
+func _on_upnp_completed(status) -> void:
+	print(status)
 
 func _on_host_pressed() -> void:
 	Debug.print("host")
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(PORT, MAX_PLAYERS)
+	var err = peer.create_server(PORT, MAX_PLAYERS)
+	print(err)
 	multiplayer.multiplayer_peer = peer
 	start.hide()
 	_add_player(user.text, color_name.get_picker().color, multiplayer.get_unique_id())
@@ -48,7 +53,8 @@ func _on_host_pressed() -> void:
 func _on_join_pressed() -> void:
 	Debug.print("join")
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip.text, PORT)
+	var err = peer.create_client(ip.text, PORT)
+	print(err)
 	multiplayer.multiplayer_peer = peer
 	start.hide()
 	_add_player(user.text, color_name.get_picker().color, multiplayer.get_unique_id())
@@ -74,7 +80,7 @@ func _on_peer_disconnected(id: int) -> void:
 func _on_server_disconnected() -> void:
 	print("server_disconnected")
 
-func _add_player(name: String, color: Color, id: int):
+func _add_player(nameString: String, color: Color, id: int):
 	var container = HBoxContainer.new()
 	var label = Label.new()
 	var colorRect = ColorRect.new()
@@ -83,17 +89,17 @@ func _add_player(name: String, color: Color, id: int):
 	colorRect.custom_minimum_size  = Vector2(20, 0)
 	container.name = str(id)
 	label.modulate = color
-	label.text = name
+	label.text = nameString
 	container.add_child(colorRect)
 	container.add_child(label)
 	players_list.add_child(container)
+	Game._players.append(id)
 
 @rpc("any_peer", "reliable")
 func send_info(info: Dictionary) -> void:
-	var name = info.name
 	var color_name = info.color_name
 	var id = multiplayer.get_remote_sender_id()
-	_add_player(name, color_name, id)
+	_add_player(info.name, color_name, id)
 
 func _paint_ready(id: int) -> void:
 	for child in players_list.get_children():
