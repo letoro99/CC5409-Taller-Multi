@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://db2u68ln3gbvr"]
+[gd_scene load_steps=6 format=3 uid="uid://db2u68ln3gbvr"]
 
 [ext_resource type="Texture2D" uid="uid://28o033rodqwi" path="res://icon.svg" id="1_rb0hy"]
+[ext_resource type="Script" path="res://scenes/game/main.gd" id="1_v2exs"]
 [ext_resource type="PackedScene" uid="uid://cgmsb2w2b8xoq" path="res://scenes/game/characters/character.tscn" id="2_x0e3i"]
 [ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="3_va0dv"]
 
@@ -8,6 +9,8 @@
 size = Vector2(1159, 74)
 
 [node name="main" type="Node2D"]
+script = ExtResource("1_v2exs")
+_player_scene = ExtResource("2_x0e3i")
 
 [node name="StaticBody2D4" type="StaticBody2D" parent="."]
 position = Vector2(1723, 604)
@@ -33,44 +36,61 @@ modulate = Color(0, 0, 0, 1)
 scale = Vector2(9, 0.5)
 texture = ExtResource("1_rb0hy")
 
-[node name="character" parent="." instance=ExtResource("2_x0e3i")]
-position = Vector2(576, 413)
+[node name="Players" type="Node2D" parent="."]
 
-[node name="portal" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+[node name="Spawner" type="Node2D" parent="."]
+
+[node name="1stSpawner" type="Marker2D" parent="Spawner"]
+position = Vector2(710, 403)
+
+[node name="2ndSpawner" type="Marker2D" parent="Spawner"]
+position = Vector2(1681, 390)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/game/characters/character.tscn")
+spawn_path = NodePath("../Players")
+
+[node name="Portals" type="Node" parent="."]
+
+[node name="portal" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
 position = Vector2(428, 448)
 another_portal = NodePath("../portal2")
 metadata/_edit_group_ = true
 
-[node name="portal2" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+[node name="portal2" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
 position = Vector2(280, 274)
 rotation = 1.5708
 another_portal = NodePath("../portal")
 normal_portal = Vector2(0, 1)
 metadata/_edit_group_ = true
 
-[node name="portal3" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+[node name="portal3" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
 position = Vector2(2211, 431)
 rotation = 3.14159
 another_portal = NodePath("../portal4")
 normal_portal = Vector2(-1, 0)
 metadata/_edit_group_ = true
 
-[node name="portal4" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+[node name="portal4" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
 position = Vector2(2007, 509)
 rotation = -1.5708
 another_portal = NodePath("../portal3")
 normal_portal = Vector2(0, -1)
 metadata/_edit_group_ = true
 
-[node name="portal5" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+[node name="portal5" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
 position = Vector2(972, 443)
 rotation = 3.14159
 another_portal = NodePath("../portal6")
 normal_portal = Vector2(-1, 0)
 metadata/_edit_group_ = true
 
-[node name="portal6" parent="." node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
+[node name="portal6" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_va0dv")]
 position = Vector2(1467, 435)
 rotation = -1.45435e-05
 another_portal = NodePath("../portal5")
 metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1913, 1083)
+zoom = Vector2(0.3, 0.3)
