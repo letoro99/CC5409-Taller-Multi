@@ -3,7 +3,6 @@ extends Node2D
 
 var canTeleport : bool = true
 
-@onready var raycast : RayCast2D = $RayCast2D
 @onready var sprite = $Sprite2D
 @onready var area = $Area2D
 @onready var timer = $Timer
@@ -18,7 +17,7 @@ func disabling_portal():
 	canTeleport = true
 
 func on_area_body_entered(body: Node2D) -> void:
-	if canTeleport:
+	if canTeleport and (body is Character or body is Props): # Can be changed with grpous ?
 		disabling_portal()
 		another_portal.disabling_portal()		
 		body.transportate(self, another_portal)

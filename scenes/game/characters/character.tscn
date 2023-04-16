@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgmsb2w2b8xoq"]
+[gd_scene load_steps=7 format=3 uid="uid://cgmsb2w2b8xoq"]
 
 [ext_resource type="Script" path="res://scenes/game/characters/character.gd" id="1_d68wb"]
 [ext_resource type="Texture2D" uid="uid://28o033rodqwi" path="res://icon.svg" id="2_dt56q"]
+[ext_resource type="PackedScene" uid="uid://c05fn1pe3drb6" path="res://scenes/game/portals/bola.tscn" id="2_uyhxu"]
+[ext_resource type="PackedScene" uid="uid://b3oi57wa1ynk4" path="res://scenes/game/portals/portal_bullet.tscn" id="2_xj5l1"]
+[ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="3_obkg6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_phuia"]
 radius = 54.0
@@ -9,9 +12,19 @@ height = 138.0
 
 [node name="character" type="CharacterBody2D"]
 script = ExtResource("1_d68wb")
+bola = ExtResource("2_uyhxu")
+pbullet_scene = ExtResource("2_xj5l1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_dt56q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_phuia")
+
+[node name="Portals" type="Node" parent="."]
+
+[node name="portal" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_obkg6")]
+another_portal = NodePath("../portal2")
+
+[node name="portal2" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_obkg6")]
+another_portal = NodePath("../portal")
