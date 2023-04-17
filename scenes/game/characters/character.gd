@@ -14,6 +14,10 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @export var pbullet_scene : PackedScene
 @onready var pbullet : PBullet
+@onready var anim_player = $AnimationPlayer
+@onready var anim_tree = $AnimationTree
+@onready var pivot = $Pivot
+@onready var playback = anim_tree.get("parameters/playback")
 
 # Character Variable
 var directionMove : Vector2 
@@ -24,6 +28,7 @@ var nextPortal : int = 0
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
+	anim_tree.active = true
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -107,7 +112,25 @@ func _physics_process(delta):
 		set_velocity(velocity)
 
 		move_and_slide()
+		
+		#Animation
+		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
+			pivot.scale.x = 1
 			
+		if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
+			pivot.scale.x = -1
+		
+		if is_on_floor():
+			if abs(velocity.x) > 50:
+				playback.travel("walk")
+			else:
+				playback.travel("idle")
+		else:
+			if velocity.y < 0:
+				playback.travel("jump")
+			else:
+				playback.travel("fall")
+		
 		rpc("send_position",  global_position)
 
 @rpc("unreliable_ordered")
