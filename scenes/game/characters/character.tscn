@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://scenes/game/characters/character.gd" id="1_d68wb"]
 [ext_resource type="Texture2D" uid="uid://5lwiu0a8sl3h" path="res://assets/player/character_20x20_red.png" id="2_puqfs"]
+[ext_resource type="PackedScene" uid="uid://c05fn1pe3drb6" path="res://scenes/game/portals/bola.tscn" id="2_uyhxu"]
+[ext_resource type="PackedScene" uid="uid://b3oi57wa1ynk4" path="res://scenes/game/portals/portal_bullet.tscn" id="2_xj5l1"]
+[ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="3_obkg6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_phuia"]
 radius = 54.0
@@ -194,6 +197,8 @@ transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition
 
 [node name="character" type="CharacterBody2D"]
 script = ExtResource("1_d68wb")
+bola = ExtResource("2_uyhxu")
+pbullet_scene = ExtResource("2_xj5l1")
 
 [node name="Pivot" type="Node2D" parent="."]
 
@@ -207,6 +212,14 @@ frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_phuia")
+
+[node name="Portals" type="Node" parent="."]
+
+[node name="portal" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_obkg6")]
+another_portal = NodePath("../portal2")
+
+[node name="portal2" parent="Portals" node_paths=PackedStringArray("another_portal") instance=ExtResource("3_obkg6")]
+another_portal = NodePath("../portal")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

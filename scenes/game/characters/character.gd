@@ -7,9 +7,13 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+@onready var portalsList = $Portals
 
 # RigidBody2D node for testing REMOVE IN THE FUTURE
-@onready var bola = preload("res://scenes/game/portals/bola.tscn")
+@export var bola : PackedScene
+
+@export var pbullet_scene : PackedScene
+@onready var pbullet : PBullet
 @onready var anim_player = $AnimationPlayer
 @onready var anim_tree = $AnimationTree
 @onready var pivot = $Pivot
@@ -19,11 +23,41 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var directionMove : Vector2 
 var angleVelocity : float = 0.0 
 var initialPosition : Vector2
+var nextPortal : int = 0
 
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
 	anim_tree.active = true
+
+# ONLY FOR TEST RIGIDBODIES 
+# DELETE WHEN PROPRS ARE CREATED
+func test_bola():
+	var element = bola.instantiate()
+	element.global_position = get_global_mouse_position()
+	get_tree().root.get_node("main").add_child(element)
+	
+func test_bullet():
+	if pbullet == null:
+		pbullet = get_tree().root.get_node("main").get_node("Pbullets/pb_" + str(multiplayer.get_unique_id()))
+	
+	# Modify player's pbullet
+	pbullet.global_position = global_position
+	pbullet.direction = (get_global_mouse_position() - global_position).normalized()
+	pbullet.portal = portalsList.get_child(nextPortal)
+	pbullet.speed = 25
+	
+	# Send info of player's bullet
+	pbullet.rpc("send_info", {
+		"position" : pbullet.position,
+		"direction" : pbullet.direction,
+		"speed" : pbullet.speed,
+		"portal" : nextPortal,
+		"player" : name
+	})
+
+	# Change to next portal
+	nextPortal = 1 - nextPortal
 
 func _handle_movement_input() -> void:
 	directionMove = Vector2.ZERO
@@ -37,13 +71,13 @@ func _handle_movement_input() -> void:
 		directionMove += Vector2.UP
 		
 	if Input.is_action_just_pressed("shoot"):
-		var element = bola.instantiate()
-		element.global_position = get_global_mouse_position()
-		get_tree().root.get_node("main").add_child(element)
+		test_bullet()
+		
+	if Input.is_action_just_pressed("alt_shoot"):
+		test_bola()
 
 func _handle_inputs() -> void:
-	if is_multiplayer_authority():
-		_handle_movement_input()
+	_handle_movement_input()
 	
 func transportate(in_portal: Portal, out_portal: Portal):
 	global_position = out_portal.global_position
@@ -53,7 +87,6 @@ func transportate(in_portal: Portal, out_portal: Portal):
 		
 func _physics_process(delta):
 	if is_multiplayer_authority():
-		print(self.global_position)
 		_handle_inputs()
 			
 		# Add the gravity.

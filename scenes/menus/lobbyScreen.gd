@@ -1,6 +1,5 @@
 extends MarginContainer
 
-
 const MAX_PLAYERS = 4
 const PORT = 5000
 
@@ -94,12 +93,12 @@ func _add_player(nameString: String, color: Color, id: int):
 	container.add_child(label)
 	players_list.add_child(container)
 	Game._players.append(id)
+	Game._bullets.append(id)
 
 @rpc("any_peer", "reliable")
 func send_info(info: Dictionary) -> void:
-	var color_name = info.color_name
 	var id = multiplayer.get_remote_sender_id()
-	_add_player(info.name, color_name, id)
+	_add_player(info.name, info.color_name, id)
 
 func _paint_ready(id: int) -> void:
 	for child in players_list.get_children():
