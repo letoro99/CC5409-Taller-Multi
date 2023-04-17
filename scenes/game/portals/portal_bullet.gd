@@ -41,8 +41,8 @@ func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	global_position += direction * speed
 	if is_multiplayer_authority():
-		global_position += direction * speed
 		rpc("send_position", global_position)
 	
 @rpc("unreliable_ordered")
