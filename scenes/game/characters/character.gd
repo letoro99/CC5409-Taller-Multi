@@ -25,7 +25,6 @@ func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
 
-
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
 func test_bola():

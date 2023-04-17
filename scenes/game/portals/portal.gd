@@ -25,7 +25,9 @@ func on_area_body_entered(body: Node2D) -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	area.body_entered.connect(on_area_body_entered)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+	
+@rpc("any_peer")
+func send_info(info: Dictionary) -> void:
+	global_position = info.position
+	rotation = info.rotation
+	normal_portal = info.normal_portal

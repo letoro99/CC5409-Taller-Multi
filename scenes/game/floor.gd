@@ -12,8 +12,10 @@ func _ready():
 	area_2d.area_entered.connect(on_area2d_enter)
 	
 func on_area2d_enter(area: Area2D):
-	if area is PBullet:
-		area.create_portal(normal_floor)
+	if is_multiplayer_authority():
+		if area is PBullet:
+			var pos = Vector2(area.global_position.x, area.global_position.y)
+			area.create_portal(normal_floor, pos)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

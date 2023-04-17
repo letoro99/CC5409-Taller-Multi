@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cgjqljlrgw3hh" path="res://assets/portals/Green Portal Sprite Sheet.png" id="2_fnnle"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8xtlr"]
-radius = 14.0
+radius = 33.9999
 height = 200.0
 
 [node name="portal" type="Node2D"]

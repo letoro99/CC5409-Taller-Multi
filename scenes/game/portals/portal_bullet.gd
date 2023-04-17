@@ -13,27 +13,36 @@ func _ready():
 func on_timer_timeout():
 	queue_free()
 
-func create_portal(normal_floor: Vector2):
-	# Change position portal
-	portal.normal_portal = normal_floor
-	portal.global_position = global_position
-	portal.rotation = Vector2.UP.angle_to(normal_floor)
+func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 	
-	# Delete PBullet
-	global_position = Vector2(-1000,-1000)
-	speed = 0
-	
-	rpc("send_info", {
-		"position" : global_position,
-		"direction" : Vector2.ZERO,
-		"speed" : 0,
-		"player" : null
-	})
+	# Only server side has this code (Server side resolve the portal's spawns)
+	if is_multiplayer_authority():
+		# Change position portal
+		portal.normal_portal = normal_floor
+		portal.global_position = pos_portal
+		portal.rotation = Vector2.UP.angle_to(normal_floor)
+		
+		# Delete PBullet
+		global_position = Vector2.ZERO
+		speed = 0
+		
+		portal.rpc("send_info", {
+			"normal_portal" : portal.normal_portal,
+			"position" : portal.global_position,
+			"rotation" : portal.rotation
+		})
+		
+		rpc("send_info", {
+			"position" : global_position,
+			"direction" : Vector2.ZERO,
+			"speed" : 0,
+			"player" : null
+		})
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	global_position += direction * speed
 	if is_multiplayer_authority():
+		global_position += direction * speed
 		rpc("send_position", global_position)
 	
 @rpc("unreliable_ordered")
@@ -45,5 +54,5 @@ func send_info(info: Dictionary) -> void:
 	global_position = info.position
 	direction = info.direction
 	speed = info.speed
-	if info.player:
+	if info.player != null:
 		portal = get_tree().root.get_node("main/Players/" + info.player + "/Portals").get_child(info.portal)
