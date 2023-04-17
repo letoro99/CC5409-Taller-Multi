@@ -15,18 +15,26 @@ position = Vector2(1824, 515)
 normal_floor = Vector2(0, 1)
 
 [node name="Muro2" parent="." instance=ExtResource("3_emfaq")]
-position = Vector2(1212, 1143)
+position = Vector2(1122, 1111)
 rotation = 1.5708
 normal_floor = Vector2(1, 0)
 
 [node name="Muro3" parent="." instance=ExtResource("3_emfaq")]
-position = Vector2(1848, 1770)
+position = Vector2(1832, 1711)
 normal_floor = Vector2(0, -1)
 
 [node name="Muro4" parent="." instance=ExtResource("3_emfaq")]
-position = Vector2(2462, 1137)
+position = Vector2(3658, 1099)
 rotation = 1.5708
 normal_floor = Vector2(-1, 0)
+
+[node name="Muro5" parent="." instance=ExtResource("3_emfaq")]
+position = Vector2(2996, 1711)
+normal_floor = Vector2(0, -1)
+
+[node name="Muro6" parent="." instance=ExtResource("3_emfaq")]
+position = Vector2(2988, 1263)
+normal_floor = Vector2(0, 1)
 
 [node name="Pbullets" type="Node2D" parent="."]
 
