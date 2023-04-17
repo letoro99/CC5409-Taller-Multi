@@ -10,6 +10,10 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # RigidBody2D node for testing REMOVE IN THE FUTURE
 @onready var bola = preload("res://scenes/game/portals/bola.tscn")
+@onready var anim_player = $AnimationPlayer
+@onready var anim_tree = $AnimationTree
+@onready var pivot = $Pivot
+@onready var playback = anim_tree.get("parameters/playback")
 
 # Character Variable
 var directionMove : Vector2 
@@ -19,6 +23,7 @@ var initialPosition : Vector2
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
+	anim_tree.active = true
 
 func _handle_movement_input() -> void:
 	directionMove = Vector2.ZERO
@@ -74,7 +79,25 @@ func _physics_process(delta):
 		set_velocity(velocity)
 
 		move_and_slide()
+		
+		#Animation
+		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
+			pivot.scale.x = 1
 			
+		if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
+			pivot.scale.x = -1
+		
+		if is_on_floor():
+			if abs(velocity.x) > 50:
+				playback.travel("walk")
+			else:
+				playback.travel("idle")
+		else:
+			if velocity.y < 0:
+				playback.travel("jump")
+			else:
+				playback.travel("fall")
+		
 		rpc("send_position",  self.global_position)
 
 @rpc("unreliable_ordered")
