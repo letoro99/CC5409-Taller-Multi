@@ -98,7 +98,7 @@ func _physics_process(delta):
 			else:
 				playback.travel("fall")
 		
-		rpc("send_position",  self.global_position)
+		rpc("send_position",  global_position)
 
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2) -> void:
