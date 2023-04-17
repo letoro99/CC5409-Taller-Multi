@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://lbin2tgikqkk"]
+
+[ext_resource type="Script" path="res://scenes/game/floor.gd" id="1_p3bcw"]
+[ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="2_7tm8n"]
+[ext_resource type="Texture2D" uid="uid://28o033rodqwi" path="res://icon.svg" id="2_oa0il"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mv8ea"]
+size = Vector2(1159, 74)
+
+[node name="Muro" type="StaticBody2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_p3bcw")
+portal_scene = ExtResource("2_7tm8n")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mv8ea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(9, 0.5)
+texture = ExtResource("2_oa0il")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_mv8ea")
