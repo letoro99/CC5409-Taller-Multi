@@ -28,7 +28,10 @@ var nextPortal : int = 0
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
-	anim_tree.active = true
+	if is_multiplayer_authority():
+		anim_tree.active = true
+	else:
+		anim_tree.active = false
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -131,8 +134,12 @@ func _physics_process(delta):
 			else:
 				playback.travel("fall")
 		
-		rpc("send_position",  global_position)
+		# Enviamos la posición del jugador, junto al frame de animación correspondiente
+		rpc("send_position",  global_position, $Pivot/Sprite2D.frame, $Pivot.scale.x)
 
 @rpc("unreliable_ordered")
-func send_position(vector: Vector2) -> void:
+func send_position(vector: Vector2, frame: int, scale: int)  -> void:
 	global_position = vector
+	$Pivot/Sprite2D.frame = frame
+	$Pivot.scale.x = scale
+	
