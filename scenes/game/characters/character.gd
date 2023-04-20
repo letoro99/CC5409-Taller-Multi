@@ -7,6 +7,7 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
 @onready var portalsList = $Portals
 
 # RigidBody2D node for testing REMOVE IN THE FUTURE
