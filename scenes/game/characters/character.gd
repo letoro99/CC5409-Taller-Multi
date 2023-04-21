@@ -79,6 +79,10 @@ func _handle_movement_input() -> void:
 		
 	if Input.is_action_just_pressed("alt_shoot"):
 		test_bola()
+		
+	if Input.is_key_pressed(KEY_R):
+		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position
+		
 
 func _handle_inputs() -> void:
 	_handle_movement_input()
