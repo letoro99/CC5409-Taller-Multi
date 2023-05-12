@@ -7,6 +7,7 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var last_velocity : Vector2
 
 @onready var portalsList = $Portals
 
@@ -88,7 +89,11 @@ func _handle_inputs() -> void:
 	_handle_movement_input()
 	
 func transportate(in_portal: Portal, out_portal: Portal):
-	global_position = out_portal.global_position
+	global_position = out_portal.get_node("SpawnPosition").global_position
+	if velocity.length() == 0:
+		velocity = last_velocity
+		
+	Debug.print(velocity)
 	if in_portal.normal_portal + out_portal.normal_portal != Vector2.ZERO:
 		var magnitude = 1.5 * velocity.length()
 		velocity = out_portal.normal_portal * magnitude
@@ -141,6 +146,8 @@ func _physics_process(delta):
 		
 		# Enviamos la posición del jugador, junto al frame de animación correspondiente
 		rpc("send_position",  global_position, $Pivot/Sprite2D.frame, $Pivot.scale.x)
+		if velocity.length() > 0 and velocity.length() < 2500:
+			last_velocity = velocity
 
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, scale: int)  -> void:
