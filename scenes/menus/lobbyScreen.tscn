@@ -17,7 +17,6 @@ theme_override_constants/margin_bottom = 25
 script = ExtResource("1_lbtft")
 
 [node name="Start" type="PanelContainer" parent="."]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -77,6 +76,7 @@ layout_mode = 2
 text = "JOIN"
 
 [node name="Pending" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Pending"]
@@ -115,3 +115,27 @@ layout_mode = 2
 
 [node name="PlayersList" type="VBoxContainer" parent="Pending/PanelContainer2/MarginContainer/Pending/PanelContainer"]
 layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Pending"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pending/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Pending/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select character"
+
+[node name="OptionButton" type="OptionButton" parent="Pending/PanelContainer/VBoxContainer"]
+layout_mode = 2
+item_count = 4
+popup/item_0/text = "Red"
+popup/item_0/id = 0
+popup/item_1/text = "Blue"
+popup/item_1/id = 1
+popup/item_2/text = "Green"
+popup/item_2/id = 2
+popup/item_3/text = "Yellow"
+popup/item_3/id = 3

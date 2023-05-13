@@ -2,6 +2,7 @@ extends Node
 
 var _players : Array = []
 var _bullets : Array = []
+var _data_players : Dictionary = {}
 var _thread = null
 
 signal upnp_completed(error)
