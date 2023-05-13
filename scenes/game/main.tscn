@@ -36,35 +36,43 @@ layer_0/tile_data = PackedInt32Array(0, 196608, 3, 65536, 917504, 7, 131072, 163
 position = Vector2(64, 1216)
 rotation = 1.5708
 scale = Vector2(30, 2)
+length_in_cells = 15
 
 [node name="rightWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(3776, 1216)
 rotation = -1.5708
 scale = Vector2(30, 2)
+length_in_cells = 15
 
 [node name="floorWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(1920, 2240)
 scale = Vector2(60, 2)
+length_in_cells = 30
 
 [node name="cellWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(1920, 192)
 scale = Vector2(60, 2)
+length_in_cells = 30
 
 [node name="plataformWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(512, 1216)
 scale = Vector2(12, 2)
+length_in_cells = 6
 
 [node name="plataformWall2" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(3328, 1216)
 scale = Vector2(12, 2)
+length_in_cells = 6
 
 [node name="plataformWall3" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(1920, 1728)
 scale = Vector2(28, 2)
+length_in_cells = 14
 
 [node name="plataformWall4" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(1920, 704)
 scale = Vector2(24, 2)
+length_in_cells = 12
 
 [node name="Spawner" type="Node2D" parent="."]
 
