@@ -27,6 +27,8 @@ func _ready():
 			player.name = str(id)
 			player.global_position = spawner.global_position
 			player.get_node("Pivot/Sprite2D").texture = sprites_characters[Game._data_players[id].character]
+			player.get_node("Portals").get_child(0).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][0]
+			player.get_node("Portals").get_child(1).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]
 			
 			pbullet.name = ("pb_" + str(id))
 			
@@ -48,4 +50,6 @@ func update_data_game():
 	for key in Game._data_players.keys():
 		var value = Game._data_players[key]
 		_players.get_node(str(key) + "/Pivot/Sprite2D").texture = sprites_characters[value.character]
+		_players.get_node(str(key) + "/Portals").get_child(0).modulate = Game.PORTALS_COLORS[value.character][0]
+		_players.get_node(str(key) + "/Portals").get_child(1).modulate = Game.PORTALS_COLORS[value.character][1]
 	

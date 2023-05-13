@@ -1,5 +1,14 @@
 extends Node
 
+# Constants
+const PORTALS_COLORS = {
+	0 	: [Color(0.9, 0.1, 0.1), Color(0.9, 0.5, 0.5)],
+	1 	: [Color(0.1, 0.1, 0.9), Color(0.5, 0.5, 0.9)],
+	2 	: [Color(0.1, 0.9, 0.1), Color(0.5, 0.9, 0.5)],
+	3 	: [Color(0.9, 0.9, 0.1), Color(1, 0.7, 0.1)],
+}
+
+# Variables
 var _players : Array = []
 var _bullets : Array = []
 var _data_players : Dictionary = {}

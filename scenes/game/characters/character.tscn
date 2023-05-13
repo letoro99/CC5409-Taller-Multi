@@ -208,7 +208,7 @@ scale = Vector2(7, 7.9)
 texture = ExtResource("2_puqfs")
 hframes = 6
 vframes = 5
-frame = 1
+frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_phuia")
