@@ -150,8 +150,8 @@ func _physics_process(delta):
 			last_velocity = velocity
 
 @rpc("unreliable_ordered")
-func send_position(vector: Vector2, frame: int, scale: int)  -> void:
+func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
 	$Pivot/Sprite2D.frame = frame
-	$Pivot.scale.x = scale
+	$Pivot.scale.x = _scale
 	
