@@ -15,7 +15,7 @@ var last_velocity : Vector2
 @export var bola : PackedScene
 
 @export var pbullet_scene : PackedScene
-@onready var pbullet : PBullet
+@onready var pbullets : Array
 @onready var anim_player = $AnimationPlayer
 @onready var anim_tree = $AnimationTree
 @onready var pivot = $Pivot
@@ -25,7 +25,6 @@ var last_velocity : Vector2
 var directionMove : Vector2 
 var angleVelocity : float = 0.0 
 var initialPosition : Vector2
-var nextPortal : int = 0
 
 func _ready():
 	Debug.print(name)
@@ -42,14 +41,14 @@ func test_bola():
 	element.global_position = get_global_mouse_position()
 	get_tree().root.get_node("main").add_child(element)
 	
-func test_bullet():
-	if pbullet == null:
-		pbullet = get_tree().root.get_node("main").get_node("Pbullets/pb_" + str(multiplayer.get_unique_id()))
+func shoot_pbullet(index: int):
+	var pbullet = pbullets[index]
+	Debug.print(pbullet.name)
 	
 	# Modify player's pbullet
 	pbullet.global_position = global_position
 	pbullet.direction = (get_global_mouse_position() - global_position).normalized()
-	pbullet.portal = portalsList.get_child(nextPortal)
+	pbullet.portal = portalsList.get_child(index)
 	pbullet.speed = 25
 	
 	# Send info of player's bullet
@@ -57,12 +56,9 @@ func test_bullet():
 		"position" : pbullet.position,
 		"direction" : pbullet.direction,
 		"speed" : pbullet.speed,
-		"portal" : nextPortal,
+		"portal" : index,
 		"player" : name
 	})
-
-	# Change to next portal
-	nextPortal = 1 - nextPortal
 
 func _handle_movement_input() -> void:
 	directionMove = Vector2.ZERO
@@ -76,10 +72,10 @@ func _handle_movement_input() -> void:
 		directionMove += Vector2.UP
 		
 	if Input.is_action_just_pressed("shoot"):
-		test_bullet()
+		shoot_pbullet(0)
 		
 	if Input.is_action_just_pressed("alt_shoot"):
-		test_bola()
+		shoot_pbullet(1)
 		
 	if Input.is_key_pressed(KEY_R):
 		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position

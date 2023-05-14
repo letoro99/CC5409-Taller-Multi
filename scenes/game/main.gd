@@ -21,7 +21,8 @@ func _ready():
 		for i in Game._players.size():
 			var id = Game._players[i]
 			var player : Character = _player_scene.instantiate()
-			var pbullet : PBullet = _bullet_scene.instantiate()
+			var pbullet_left : PBullet = _bullet_scene.instantiate()
+			var pbullet_right : PBullet = _bullet_scene.instantiate()
 			var spawner = _spawners.get_child(i)
 			
 			player.name = str(id)
@@ -30,9 +31,13 @@ func _ready():
 			player.get_node("Portals").get_child(0).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][0]
 			player.get_node("Portals").get_child(1).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]
 			
-			pbullet.name = ("pb_" + str(id))
+			pbullet_left.name = ("pbleft_" + str(id))
+			pbullet_right.name = ("pbright_" + str(id))
 			
-			_pbullets.add_child(pbullet)
+			_pbullets.add_child(pbullet_left)
+			_pbullets.add_child(pbullet_right)
+			
+			player.pbullets = [pbullet_left, pbullet_right]
 			_players.add_child(player, true)
 			
 			if id != multiplayer.get_unique_id():
@@ -52,4 +57,4 @@ func update_data_game():
 		_players.get_node(str(key) + "/Pivot/Sprite2D").texture = sprites_characters[value.character]
 		_players.get_node(str(key) + "/Portals").get_child(0).modulate = Game.PORTALS_COLORS[value.character][0]
 		_players.get_node(str(key) + "/Portals").get_child(1).modulate = Game.PORTALS_COLORS[value.character][1]
-	
+		_players.get_node(str(key)).pbullets = [_pbullets.get_node("pbleft_" + str(key)), _pbullets.get_node("pbright_" + str(key))]
