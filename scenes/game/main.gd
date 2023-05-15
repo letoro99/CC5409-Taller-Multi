@@ -63,5 +63,3 @@ func update_data_game():
 		_players.get_node(str(key)).pbullets = [_pbullets.get_node("pbleft_" + str(key)), _pbullets.get_node("pbright_" + str(key))]
 		_players.get_node(str(key)).pbullets[0].modulate = Game.PORTALS_COLORS[value.character][0]
 		_players.get_node(str(key)).pbullets[1].modulate = Game.PORTALS_COLORS[value.character][1]
-		
-		
