@@ -6,14 +6,16 @@ const SPEED = 400.0
 const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
+
+# Variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var last_velocity : Vector2
+var _directionAim : Vector2
 
 @onready var portalsList = $Portals
 
 # RigidBody2D node for testing REMOVE IN THE FUTURE
 @export var bola : PackedScene
-
 @export var pbullet_scene : PackedScene
 @onready var pbullets : Array
 @onready var anim_player = $AnimationPlayer
@@ -40,6 +42,21 @@ func test_bola():
 	var element = bola.instantiate()
 	element.global_position = get_global_mouse_position()
 	get_tree().root.get_node("main").add_child(element)
+	
+func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
+	return vector1.angle_to(vector2)
+
+func get_substraction_vectors(vector1: Vector2, vector2: Vector2):
+	return (vector1 - vector2).normalized()
+	
+func _set_position_pg():
+	_directionAim = get_substraction_vectors(get_global_mouse_position(), self.global_position)
+	get_node("Sprite_PG").global_position = global_position + 100 * _directionAim
+	get_node("Sprite_PG").rotation_degrees = rad_to_deg(get_angle_two_vectors(Vector2.UP, _directionAim))
+	if get_node("Sprite_PG").rotation_degrees < 0:
+		get_node("Sprite_PG").flip_h = true
+	else:
+		get_node("Sprite_PG").flip_h = false
 	
 func shoot_pbullet(index: int):
 	var pbullet = pbullets[index]
@@ -122,6 +139,10 @@ func _physics_process(delta):
 
 		move_and_slide()
 		
+		# Portal Gun positions
+		_set_position_pg()
+		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})
+		
 		#Animation
 		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
 			pivot.scale.x = 1
@@ -150,4 +171,10 @@ func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
 	$Pivot/Sprite2D.frame = frame
 	$Pivot.scale.x = _scale
-	
+
+@rpc("unreliable_ordered")	
+func _send_position_pg(data: Dictionary):
+	get_node("Sprite_PG").global_position = data.position
+	get_node("Sprite_PG").rotation_degrees = data.rotation
+	get_node("Sprite_PG").flip_h = data.flip
+	pass

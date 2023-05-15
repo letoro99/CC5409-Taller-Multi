@@ -1,10 +1,11 @@
-[gd_scene load_steps=30 format=3 uid="uid://cgmsb2w2b8xoq"]
+[gd_scene load_steps=31 format=3 uid="uid://cgmsb2w2b8xoq"]
 
 [ext_resource type="Script" path="res://scenes/game/characters/character.gd" id="1_d68wb"]
 [ext_resource type="Texture2D" uid="uid://5lwiu0a8sl3h" path="res://assets/player/character_20x20_red.png" id="2_puqfs"]
 [ext_resource type="PackedScene" uid="uid://c05fn1pe3drb6" path="res://scenes/game/portals/bola.tscn" id="2_uyhxu"]
 [ext_resource type="PackedScene" uid="uid://b3oi57wa1ynk4" path="res://scenes/game/portals/portal_bullet.tscn" id="2_xj5l1"]
 [ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="3_obkg6"]
+[ext_resource type="Texture2D" uid="uid://cqbpfx0h2gqkg" path="res://assets/portals/portal_gun.png" id="5_rsxl4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_phuia"]
 radius = 54.0
@@ -209,6 +210,11 @@ texture = ExtResource("2_puqfs")
 hframes = 6
 vframes = 5
 frame = 6
+
+[node name="Sprite_PG" type="Sprite2D" parent="."]
+position = Vector2(0, -100)
+scale = Vector2(4, 4)
+texture = ExtResource("5_rsxl4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_phuia")
