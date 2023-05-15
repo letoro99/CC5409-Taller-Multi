@@ -34,6 +34,9 @@ func _ready():
 			pbullet_left.name = ("pbleft_" + str(id))
 			pbullet_right.name = ("pbright_" + str(id))
 			
+			pbullet_left.modulate = Game.PORTALS_COLORS[Game._data_players[id].character][0]
+			pbullet_right.modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]
+			
 			_pbullets.add_child(pbullet_left)
 			_pbullets.add_child(pbullet_right)
 			
@@ -58,3 +61,5 @@ func update_data_game():
 		_players.get_node(str(key) + "/Portals").get_child(0).modulate = Game.PORTALS_COLORS[value.character][0]
 		_players.get_node(str(key) + "/Portals").get_child(1).modulate = Game.PORTALS_COLORS[value.character][1]
 		_players.get_node(str(key)).pbullets = [_pbullets.get_node("pbleft_" + str(key)), _pbullets.get_node("pbright_" + str(key))]
+		_players.get_node(str(key)).pbullets[0].modulate = Game.PORTALS_COLORS[value.character][0]
+		_players.get_node(str(key)).pbullets[1].modulate = Game.PORTALS_COLORS[value.character][1]

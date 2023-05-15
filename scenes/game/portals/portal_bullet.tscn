@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b3oi57wa1ynk4"]
 
 [ext_resource type="Script" path="res://scenes/game/portals/portal_bullet.gd" id="1_00cum"]
-[ext_resource type="Texture2D" uid="uid://28o033rodqwi" path="res://icon.svg" id="1_51mgo"]
+[ext_resource type="Texture2D" uid="uid://2xs470va3kx8" path="res://assets/portals/bullet_pg.png" id="2_j7jsd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_31xru"]
 radius = 30.0167
@@ -10,13 +10,12 @@ radius = 30.0167
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_00cum")
+speed = 75.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_31xru")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 0, 1)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("1_51mgo")
-
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_j7jsd")

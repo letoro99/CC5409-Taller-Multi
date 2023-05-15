@@ -4,14 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://cyfu4qcosiw0q" path="res://assets/portals/portal.png" id="2_g51bv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8xtlr"]
-radius = 16.0
-height = 156.0
+radius = 19.0
+height = 286.0
 
 [node name="portal" type="Node2D"]
 script = ExtResource("1_r583i")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(1.5, 2.2)
+scale = Vector2(2.2, 1.613)
 texture = ExtResource("2_g51bv")
 
 [node name="Timer" type="Timer" parent="."]
@@ -20,7 +20,7 @@ texture = ExtResource("2_g51bv")
 rotation = -1.5708
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(16, 5.81741e-05)
+position = Vector2(15, 0)
 shape = SubResource("CapsuleShape2D_8xtlr")
 
 [node name="SpawnPosition" type="Marker2D" parent="."]
