@@ -149,7 +149,6 @@ func send_actual_data(data: Dictionary):
 	Game._data_players = data
 	for key in Game._data_players:
 		var value = Game._data_players[key]
-		players_list.get_node(str(key) + "/character").text = str(value.character)
 
 @rpc("any_peer", "call_local", "reliable")
 func start_game() -> void:
