@@ -60,22 +60,24 @@ func _set_position_pg():
 	
 func shoot_pbullet(index: int):
 	var pbullet = pbullets[index]
-	Debug.print(pbullet.name)
-	
-	# Modify player's pbullet
-	pbullet.global_position = global_position
-	pbullet.direction = (get_global_mouse_position() - global_position).normalized()
-	pbullet.portal = portalsList.get_child(index)
-	pbullet.speed = 45
-	
-	# Send info of player's bullet
-	pbullet.rpc("send_info", {
-		"position" : pbullet.position,
-		"direction" : pbullet.direction,
-		"speed" : pbullet.speed,
-		"portal" : index,
-		"player" : name
-	})
+
+	if pbullet.enabled:
+		pbullet.enabled = false
+		
+		# Modify player's pbullet
+		pbullet.global_position = global_position
+		pbullet.direction = (get_global_mouse_position() - global_position).normalized()
+		pbullet.portal = portalsList.get_child(index)
+		pbullet.speed = 45
+		
+		# Send info of player's bullet
+		pbullet.rpc("send_info", {
+			"position" : pbullet.position,
+			"direction" : pbullet.direction,
+			"speed" : pbullet.speed,
+			"portal" : index,
+			"player" : name
+		})
 
 func _handle_movement_input() -> void:
 	directionMove = Vector2.ZERO

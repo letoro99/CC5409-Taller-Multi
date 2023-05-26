@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cyfu4qcosiw0q" path="res://assets/portals/portal.png" id="2_g51bv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8xtlr"]
-radius = 19.0
+radius = 30.0
 height = 286.0
 
 [node name="portal" type="Node2D"]

@@ -3,12 +3,14 @@ extends Area2D
 
 var direction : Vector2
 var portal : Portal
+var enabled : bool
 @export var speed : float = 300
 @onready var timer = $Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	timer.timeout.connect(on_timer_timeout)
+	enabled = true
 
 func on_timer_timeout():
 	queue_free()
@@ -17,6 +19,8 @@ func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 	
 	# Only server side has this code (Server side resolve the portal's spawns)
 	if is_multiplayer_authority():
+		enabled = true
+		
 		# Change position portal
 		portal.normal_portal = normal_floor
 		portal.global_position = pos_portal
@@ -54,5 +58,6 @@ func send_info(info: Dictionary) -> void:
 	global_position = info.position
 	direction = info.direction
 	speed = info.speed
+	enabled = true
 	if info.player != null:
 		portal = get_tree().root.get_node("main/Players/" + info.player + "/Portals").get_child(info.portal)
