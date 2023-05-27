@@ -46,13 +46,13 @@ length_in_cells = 15
 
 [node name="floorWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(1920, 2240)
-scale = Vector2(60, 2)
-length_in_cells = 30
+scale = Vector2(56, 2)
+length_in_cells = 28
 
 [node name="cellWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(1920, 192)
-scale = Vector2(60, 2)
-length_in_cells = 30
+scale = Vector2(56, 2)
+length_in_cells = 28
 
 [node name="plataformWall" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(512, 1216)
@@ -82,7 +82,7 @@ position = Vector2(1926, 1548)
 [node name="2ndSpawner" type="Marker2D" parent="Spawner"]
 position = Vector2(1917, 512)
 
-[node name="3rdSpawner2" type="Marker2D" parent="Spawner"]
+[node name="3rdSpawner" type="Marker2D" parent="Spawner"]
 position = Vector2(439, 968)
 
 [node name="4thSpawn" type="Marker2D" parent="Spawner"]

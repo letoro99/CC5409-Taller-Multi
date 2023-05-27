@@ -4,6 +4,7 @@ extends Area2D
 var direction : Vector2
 var portal : Portal
 var enabled : bool
+var target_position : Vector2 
 @export var speed : float = 0
 @onready var timer = $Timer
 

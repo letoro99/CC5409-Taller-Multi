@@ -22,6 +22,7 @@ var _directionAim : Vector2
 @onready var anim_tree = $AnimationTree
 @onready var pivot = $Pivot
 @onready var playback = anim_tree.get("parameters/playback")
+@onready var ray_cast = $RayCast2D
 
 # Character Variable
 var directionMove : Vector2 
@@ -35,6 +36,9 @@ func _ready():
 		anim_tree.active = true
 	else:
 		anim_tree.active = false
+		
+	ray_cast.add_exception(pbullets[0])
+	ray_cast.add_exception(pbullets[1])
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -51,6 +55,8 @@ func get_substraction_vectors(vector1: Vector2, vector2: Vector2):
 	
 func _set_position_portalgun():
 	_directionAim = get_substraction_vectors(get_global_mouse_position(), self.global_position)
+	ray_cast.target_position = _directionAim * 3000
+
 	get_node("Sprite_PG").global_position = global_position + 100 * _directionAim
 	get_node("Sprite_PG").rotation_degrees = rad_to_deg(get_angle_two_vectors(Vector2.UP, _directionAim))
 	if get_node("Sprite_PG").rotation_degrees < 0:
@@ -69,6 +75,7 @@ func shoot_pbullet(index: int):
 		pbullet.direction = (get_global_mouse_position() - global_position).normalized()
 		pbullet.portal = portalsList.get_child(index)
 		pbullet.speed = 45
+		pbullet.target_position = ray_cast.get_collision_point()
 		
 		# Send info of player's bullet
 		pbullet.rpc("send_info", {

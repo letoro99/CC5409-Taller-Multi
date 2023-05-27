@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://lbin2tgikqkk"]
+[gd_scene load_steps=5 format=3 uid="uid://lbin2tgikqkk"]
 
 [ext_resource type="Script" path="res://scenes/game/floor.gd" id="1_p3bcw"]
 [ext_resource type="PackedScene" uid="uid://v607igbkkayu" path="res://scenes/game/portals/portal.tscn" id="2_7tm8n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ynbhw"]
+size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mv8ea"]
 size = Vector2(64, 64)
@@ -16,7 +19,7 @@ portal_scene = ExtResource("2_7tm8n")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_mv8ea")
+shape = SubResource("RectangleShape2D_ynbhw")
 
 [node name="Area2D" type="Area2D" parent="."]
 
