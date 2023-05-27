@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1xwxcyty6yo"]
+
+[ext_resource type="Texture2D" uid="uid://bs4rkm74ueip2" path="res://assets/props/cardboard_box.png" id="1_yhr5p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pv5gs"]
+size = Vector2(80, 80)
+
+[node name="prop" type="RigidBody2D"]
+
+[node name="CardboardBox" type="Sprite2D" parent="."]
+scale = Vector2(5, 5)
+texture = ExtResource("1_yhr5p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pv5gs")

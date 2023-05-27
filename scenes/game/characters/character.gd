@@ -12,6 +12,16 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var last_velocity : Vector2
 var _directionAim : Vector2
 
+# Player stats 
+var maxHP = 100;
+
+# Player current effects
+var hp = maxHP;				# player health
+var stun = 0;				# stun time
+var lives = 0;				# to implement: lives
+
+var lastDamager = null;
+
 @onready var portalsList = $Portals
 
 # RigidBody2D node for testing REMOVE IN THE FUTURE
@@ -165,6 +175,32 @@ func _physics_process(delta):
 		rpc("send_position",  global_position, $Pivot/Sprite2D.frame, $Pivot.scale.x)
 		if velocity.length() > 0 and velocity.length() < 2500:
 			last_velocity = velocity
+
+# =============== HEALTH API =================
+func hpChanged():
+	# here we should send the signals 
+	# to the corresponding nodes that read HP
+	
+	if hp <= 0:
+		queue_free();
+		pass
+		# process death sequence
+
+func decreaseHP(amount: float):
+	# decreases HP in a certain amount 
+	hp -= amount;
+	self.hpChanged()
+
+# =============== DAMAGE API =================
+func dealDamage(damage: float, damager: Node = null):
+	# here we would implement extra effects
+	decreaseHP(damage);
+	
+	if damager:
+		lastDamager = damager;
+	
+
+
 
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
