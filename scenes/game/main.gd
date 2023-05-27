@@ -10,7 +10,10 @@ extends Node2D
 	load("res://assets/player/character_20x20_red.png"),
 	load("res://assets/player/character_20x20_blue.png"),
 	load("res://assets/player/character_20x20_green.png"),
-	load("res://assets/player/character_20x20_yellow.png")
+	load("res://assets/player/character_20x20_yellow.png"),
+	load("res://assets/player/character_20x20_brown.png"),
+	load("res://assets/player/character_20x20_orange.png"),
+	load("res://assets/player/character_20x20_purple.png")
 ]
 
 # Called when the node enters the scene tree for the first time.
