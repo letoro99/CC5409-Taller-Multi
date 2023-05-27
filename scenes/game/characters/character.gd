@@ -49,7 +49,7 @@ func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
 func get_substraction_vectors(vector1: Vector2, vector2: Vector2):
 	return (vector1 - vector2).normalized()
 	
-func _set_position_pg():
+func _set_position_portalgun():
 	_directionAim = get_substraction_vectors(get_global_mouse_position(), self.global_position)
 	get_node("Sprite_PG").global_position = global_position + 100 * _directionAim
 	get_node("Sprite_PG").rotation_degrees = rad_to_deg(get_angle_two_vectors(Vector2.UP, _directionAim))
@@ -108,7 +108,6 @@ func transportate(in_portal: Portal, out_portal: Portal):
 	if velocity.length() == 0:
 		velocity = last_velocity
 		
-	Debug.print(velocity)
 	if in_portal.normal_portal + out_portal.normal_portal != Vector2.ZERO:
 		var magnitude = 1.5 * velocity.length()
 		velocity = out_portal.normal_portal * magnitude
@@ -142,7 +141,7 @@ func _physics_process(delta):
 		move_and_slide()
 		
 		# Portal Gun positions
-		_set_position_pg()
+		_set_position_portalgun()
 		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})
 		
 		#Animation
@@ -175,7 +174,7 @@ func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	$Pivot.scale.x = _scale
 
 @rpc("unreliable_ordered")	
-func _send_position_pg(data: Dictionary):
+func _send_position_pg(data: Dictionary) -> void:
 	get_node("Sprite_PG").global_position = data.position
 	get_node("Sprite_PG").rotation_degrees = data.rotation
 	get_node("Sprite_PG").flip_h = data.flip

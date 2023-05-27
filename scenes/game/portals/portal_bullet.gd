@@ -4,7 +4,7 @@ extends Area2D
 var direction : Vector2
 var portal : Portal
 var enabled : bool
-@export var speed : float = 300
+@export var speed : float = 0
 @onready var timer = $Timer
 
 # Called when the node enters the scene tree for the first time.

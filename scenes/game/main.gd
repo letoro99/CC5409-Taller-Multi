@@ -36,6 +36,8 @@ func _ready():
 			
 			pbullet_left.name = ("pbleft_" + str(id))
 			pbullet_right.name = ("pbright_" + str(id))
+			pbullet_left.speed = 0
+			pbullet_right.speed = 0
 			
 			pbullet_left.modulate = Game.PORTALS_COLORS[Game._data_players[id].character][0]
 			pbullet_right.modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]
