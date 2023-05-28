@@ -1,7 +1,7 @@
 class_name Character
 extends CharacterBody2D
 
-# Constants
+# Constants Character
 const SPEED = 400.0
 const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
@@ -22,6 +22,7 @@ var _directionAim : Vector2
 @onready var anim_tree = $AnimationTree
 @onready var pivot = $Pivot
 @onready var playback = anim_tree.get("parameters/playback")
+@onready var ray_cast = $RayCast2D
 
 # Character Variable
 var directionMove : Vector2 
@@ -42,15 +43,20 @@ func test_bola():
 	var element = bola.instantiate()
 	element.global_position = get_global_mouse_position()
 	get_tree().root.get_node("main").add_child(element)
-	
+
 func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
+	# Returns a Vector2 with the angle in randians between two Vector2
 	return vector1.angle_to(vector2)
 
 func get_substraction_vectors(vector1: Vector2, vector2: Vector2):
+	# Returns a Vector2 with the 
 	return (vector1 - vector2).normalized()
 	
-func _set_position_pg():
+func _set_position_portalgun():
+	# This functions set the posiiton and rotation of portal gun sprite
 	_directionAim = get_substraction_vectors(get_global_mouse_position(), self.global_position)
+	ray_cast.target_position = _directionAim * 3000
+
 	get_node("Sprite_PG").global_position = global_position + 100 * _directionAim
 	get_node("Sprite_PG").rotation_degrees = rad_to_deg(get_angle_two_vectors(Vector2.UP, _directionAim))
 	if get_node("Sprite_PG").rotation_degrees < 0:
@@ -59,23 +65,30 @@ func _set_position_pg():
 		get_node("Sprite_PG").flip_h = false
 	
 func shoot_pbullet(index: int):
+	# This function create a bullet the parameters of the character and mouse's position
 	var pbullet = pbullets[index]
-	Debug.print(pbullet.name)
-	
-	# Modify player's pbullet
-	pbullet.global_position = global_position
-	pbullet.direction = (get_global_mouse_position() - global_position).normalized()
-	pbullet.portal = portalsList.get_child(index)
-	pbullet.speed = 45
-	
-	# Send info of player's bullet
-	pbullet.rpc("send_info", {
-		"position" : pbullet.position,
-		"direction" : pbullet.direction,
-		"speed" : pbullet.speed,
-		"portal" : index,
-		"player" : name
-	})
+
+	if pbullet.enabled:
+		pbullet.enabled = false
+		
+		# Modify player's pbullet
+		pbullet.global_position = global_position
+		pbullet.direction = (get_global_mouse_position() - global_position).normalized()
+		pbullet.portal = portalsList.get_child(index)
+		pbullet.speed = 40
+		pbullet.target_position = ray_cast.get_collision_point()
+		pbullet.valid_target = ray_cast.get_collider().get_parent().PB_collision_id == 0
+		
+		# Send info of player's bullet
+		pbullet.rpc("send_info", {
+			"position" : pbullet.position,
+			"direction" : pbullet.direction,
+			"speed" : pbullet.speed,
+			"target" : pbullet.target_position,
+			"valid" : pbullet.valid_target,
+			"portal" : index,
+			"player" : name
+		})
 
 func _handle_movement_input() -> void:
 	directionMove = Vector2.ZERO
@@ -102,11 +115,11 @@ func _handle_inputs() -> void:
 	_handle_movement_input()
 	
 func transportate(in_portal: Portal, out_portal: Portal):
+	# This function resolve the position and velocuity of a character when use a portal
 	global_position = out_portal.get_node("SpawnPosition").global_position
 	if velocity.length() == 0:
 		velocity = last_velocity
 		
-	Debug.print(velocity)
 	if in_portal.normal_portal + out_portal.normal_portal != Vector2.ZERO:
 		var magnitude = 1.5 * velocity.length()
 		velocity = out_portal.normal_portal * magnitude
@@ -117,7 +130,6 @@ func _physics_process(delta):
 			
 		# Add the gravity.
 		if not is_on_floor():
-
 			velocity.y += gravity * delta
 
 		# Handle Jump.
@@ -138,10 +150,6 @@ func _physics_process(delta):
 		set_velocity(velocity)
 
 		move_and_slide()
-		
-		# Portal Gun positions
-		_set_position_pg()
-		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})
 		
 		#Animation
 		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
@@ -165,6 +173,11 @@ func _physics_process(delta):
 		rpc("send_position",  global_position, $Pivot/Sprite2D.frame, $Pivot.scale.x)
 		if velocity.length() > 0 and velocity.length() < 2500:
 			last_velocity = velocity
+			
+		# Portal Gun positions
+		_set_position_portalgun()
+		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
+		
 
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
@@ -173,8 +186,7 @@ func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	$Pivot.scale.x = _scale
 
 @rpc("unreliable_ordered")	
-func _send_position_pg(data: Dictionary):
+func _send_position_pg(data: Dictionary) -> void:
 	get_node("Sprite_PG").global_position = data.position
 	get_node("Sprite_PG").rotation_degrees = data.rotation
 	get_node("Sprite_PG").flip_h = data.flip
-	pass

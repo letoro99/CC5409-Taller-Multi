@@ -1,26 +1,38 @@
 class_name PBullet
 extends Area2D
 
+# Variables
+var enabled : bool
+var valid_target : bool
 var direction : Vector2
+var target_position : Vector2 
 var portal : Portal
-@export var speed : float = 300
+
+# Export variables
+@export var speed : float = 0
+
+# Children Nodes
 @onready var timer = $Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	timer.timeout.connect(on_timer_timeout)
+	enabled = true
 
 func on_timer_timeout():
 	queue_free()
 
 func create_portal(normal_floor: Vector2, pos_portal: Vector2):
-	
+	# Instantiate a portal 
 	# Only server side has this code (Server side resolve the portal's spawns)
 	if is_multiplayer_authority():
+		enabled = true
+		
 		# Change position portal
-		portal.normal_portal = normal_floor
-		portal.global_position = pos_portal
-		portal.rotation = Vector2.UP.angle_to(normal_floor)
+		if valid_target:
+			portal.normal_portal = normal_floor
+			portal.global_position = pos_portal
+			portal.rotation = Vector2.UP.angle_to(normal_floor)
 		
 		# Delete PBullet
 		global_position = Vector2.ZERO
@@ -36,6 +48,7 @@ func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 			"position" : global_position,
 			"direction" : Vector2.ZERO,
 			"speed" : 0,
+			"valid" : true,
 			"player" : null
 		})
 
@@ -54,5 +67,7 @@ func send_info(info: Dictionary) -> void:
 	global_position = info.position
 	direction = info.direction
 	speed = info.speed
+	enabled = true
+	valid_target = info.valid
 	if info.player != null:
 		portal = get_tree().root.get_node("main/Players/" + info.player + "/Portals").get_child(info.portal)
