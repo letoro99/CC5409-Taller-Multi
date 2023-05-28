@@ -75,7 +75,7 @@ func shoot_pbullet(index: int):
 		pbullet.global_position = global_position
 		pbullet.direction = (get_global_mouse_position() - global_position).normalized()
 		pbullet.portal = portalsList.get_child(index)
-		pbullet.speed = 45
+		pbullet.speed = 40
 		pbullet.target_position = ray_cast.get_collision_point()
 		
 		# Send info of player's bullet
@@ -114,8 +114,6 @@ func _handle_inputs() -> void:
 func transportate(in_portal: Portal, out_portal: Portal):
 	# This function resolve the position and velocuity of a character when use a portal
 	global_position = out_portal.get_node("SpawnPosition").global_position
-	_set_position_portalgun()
-	rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})
 	if velocity.length() == 0:
 		velocity = last_velocity
 		
@@ -129,7 +127,6 @@ func _physics_process(delta):
 			
 		# Add the gravity.
 		if not is_on_floor():
-
 			velocity.y += gravity * delta
 
 		# Handle Jump.
@@ -150,10 +147,6 @@ func _physics_process(delta):
 		set_velocity(velocity)
 
 		move_and_slide()
-		
-		# Portal Gun positions
-		_set_position_portalgun()
-		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
 		
 		#Animation
 		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
@@ -177,6 +170,11 @@ func _physics_process(delta):
 		rpc("send_position",  global_position, $Pivot/Sprite2D.frame, $Pivot.scale.x)
 		if velocity.length() > 0 and velocity.length() < 2500:
 			last_velocity = velocity
+			
+		# Portal Gun positions
+		_set_position_portalgun()
+		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
+		
 
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
@@ -189,4 +187,3 @@ func _send_position_pg(data: Dictionary) -> void:
 	get_node("Sprite_PG").global_position = data.position
 	get_node("Sprite_PG").rotation_degrees = data.rotation
 	get_node("Sprite_PG").flip_h = data.flip
-	pass
