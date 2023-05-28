@@ -200,8 +200,6 @@ func dealDamage(damage: float, damager: Node = null):
 		lastDamager = damager;
 	
 
-
-
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
