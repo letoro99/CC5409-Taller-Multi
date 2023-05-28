@@ -237,3 +237,8 @@ tree_root = SubResource("AnimationNodeStateMachine_arove")
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_2i7i8")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_phuia")

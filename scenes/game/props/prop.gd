@@ -14,5 +14,5 @@ func push(direction: Vector2):
 	pass
 
 func _on_body_entered(body):
-	print( body );
+	print("Collision: ", body );
 	pass # Replace with function body.
