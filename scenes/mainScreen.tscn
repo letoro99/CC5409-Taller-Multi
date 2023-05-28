@@ -20,6 +20,11 @@ alignment = 1
 layout_mode = 2
 text = "PLAY"
 
+[node name="options" type="Button" parent="menuContainer"]
+layout_mode = 2
+text = "OPTIONS
+"
+
 [node name="credits" type="Button" parent="menuContainer"]
 layout_mode = 2
 text = "CREDITS
