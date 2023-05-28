@@ -55,7 +55,9 @@ func on_area2d_enter(area: Area2D):
 			if rotation == 90 and (global_position.x - area.global_position.x) < 0:
 				actual_normal = - normal_floor
 				
-			area.create_portal(actual_normal, _get_vector_spawn(area.target_position))
+			area.create_portal(actual_normal, _get_vector_spawn(area.global_position))
+			# global_position : bug en esquinas - menos grave
+			# target_position : bug en los clientes - grave
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

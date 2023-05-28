@@ -33,12 +33,24 @@ layer_0/tile_data = PackedInt32Array(0, 196608, 3, 65536, 917504, 7, 131072, 163
 [node name="Muros" type="Node" parent="."]
 
 [node name="leftWall" parent="Muros" instance=ExtResource("3_emfaq")]
-position = Vector2(64, 1216)
+position = Vector2(64, 1728)
 rotation = 1.5708
+scale = Vector2(14, 2)
+length_in_cells = 7
+
+[node name="leftWall2" parent="Muros" instance=ExtResource("3_emfaq")]
+position = Vector2(64, 704)
+rotation = 1.5708
+scale = Vector2(14, 2)
+length_in_cells = 7
+
+[node name="rightWall" parent="Muros" instance=ExtResource("3_emfaq")]
+position = Vector2(3776, 1216)
+rotation = -1.5708
 scale = Vector2(30, 2)
 length_in_cells = 15
 
-[node name="rightWall" parent="Muros" instance=ExtResource("3_emfaq")]
+[node name="rightWall2" parent="Muros" instance=ExtResource("3_emfaq")]
 position = Vector2(3776, 1216)
 rotation = -1.5708
 scale = Vector2(30, 2)

@@ -36,9 +36,6 @@ func _ready():
 		anim_tree.active = true
 	else:
 		anim_tree.active = false
-		
-	ray_cast.add_exception(pbullets[0])
-	ray_cast.add_exception(pbullets[1])
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -112,6 +109,8 @@ func _handle_inputs() -> void:
 	
 func transportate(in_portal: Portal, out_portal: Portal):
 	global_position = out_portal.get_node("SpawnPosition").global_position
+	_set_position_portalgun()
+	rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})
 	if velocity.length() == 0:
 		velocity = last_velocity
 		
@@ -149,7 +148,7 @@ func _physics_process(delta):
 		
 		# Portal Gun positions
 		_set_position_portalgun()
-		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})
+		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
 		
 		#Animation
 		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):

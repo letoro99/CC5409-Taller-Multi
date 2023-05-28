@@ -52,6 +52,14 @@ alt_shoot={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Floor_body"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Portal"
+2d_physics/layer_4="Bullet"
+2d_physics/layer_5="Floor_portal"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
