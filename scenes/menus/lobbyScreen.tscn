@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://drg5pm1k6ld8t"]
+[gd_scene load_steps=10 format=3 uid="uid://drg5pm1k6ld8t"]
 
 [ext_resource type="Script" path="res://scenes/menus/lobbyScreen.gd" id="1_lbtft"]
+[ext_resource type="Texture2D" uid="uid://cgkos8bwq67wu" path="res://assets/player/profile/blue_profile.png" id="2_ihk4t"]
+[ext_resource type="Texture2D" uid="uid://mk3qld0godyy" path="res://assets/player/profile/red_profile.png" id="2_kx7md"]
+[ext_resource type="Texture2D" uid="uid://bdhnkp505082p" path="res://assets/player/profile/green_profile.png" id="4_1c4a4"]
+[ext_resource type="Texture2D" uid="uid://dq5xctbqcq84t" path="res://assets/player/profile/yellow_profile.png" id="5_vkg7j"]
+[ext_resource type="Texture2D" uid="uid://cbs8qi6nvy2xr" path="res://assets/player/profile/brown_profile.png" id="6_m5cw1"]
+[ext_resource type="Texture2D" uid="uid://dng2v10pkki1d" path="res://assets/player/profile/orange_profile.png" id="7_osp55"]
+[ext_resource type="Texture2D" uid="uid://df0q2posasfhl" path="res://assets/player/profile/purple_profile.png" id="8_f30wy"]
+[ext_resource type="Texture2D" uid="uid://d1pi8hph0isx2" path="res://assets/player/profile/pink_profile.png" id="9_yay50"]
 
 [node name="lobbyScreen" type="MarginContainer"]
 anchors_preset = 15
@@ -130,18 +138,30 @@ text = "Select character"
 
 [node name="OptionButton" type="OptionButton" parent="Pending/PanelContainer/VBoxContainer"]
 layout_mode = 2
-item_count = 7
+alignment = 2
+expand_icon = true
+item_count = 8
 popup/item_0/text = "Red"
+popup/item_0/icon = ExtResource("2_kx7md")
 popup/item_0/id = 0
 popup/item_1/text = "Blue"
+popup/item_1/icon = ExtResource("2_ihk4t")
 popup/item_1/id = 1
 popup/item_2/text = "Green"
+popup/item_2/icon = ExtResource("4_1c4a4")
 popup/item_2/id = 2
 popup/item_3/text = "Yellow"
+popup/item_3/icon = ExtResource("5_vkg7j")
 popup/item_3/id = 3
 popup/item_4/text = "Brown"
+popup/item_4/icon = ExtResource("6_m5cw1")
 popup/item_4/id = 4
 popup/item_5/text = "Orange"
+popup/item_5/icon = ExtResource("7_osp55")
 popup/item_5/id = 5
 popup/item_6/text = "Purple"
+popup/item_6/icon = ExtResource("8_f30wy")
 popup/item_6/id = 6
+popup/item_7/text = "Pink"
+popup/item_7/icon = ExtResource("9_yay50")
+popup/item_7/id = 7

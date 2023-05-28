@@ -70,9 +70,6 @@ func _on_peer_connected(id: int) -> void:
 	Debug.print("peer_connected %d" % id)
 	rpc_id(id, "send_info", { "name": user.text , "color_name": color_name.get_picker().color})
 	if multiplayer.is_server():
-		Game._data_players[id] = {"character" : 0}
-		Debug.print(Game._data_players)
-		rpc("send_actual_data", Game._data_players)
 		status[id] = false
 
 func _on_peer_disconnected(id: int) -> void:
@@ -85,7 +82,7 @@ func _add_player(nameString: String, color: Color, id: int):
 	var container = HBoxContainer.new()
 	var label = Label.new()
 	var colorRect = ColorRect.new()
-	var character = Label.new()
+	var character = TextureRect.new()
 	
 	colorRect.name = "status"
 	colorRect.color = Color.RED
@@ -95,7 +92,7 @@ func _add_player(nameString: String, color: Color, id: int):
 	label.text = nameString
 	
 	character.name = "character"
-	character.text = "0"
+	character.texture = Game.CHARACTER_PROFILES[0]
 	
 	container.name = str(id)
 	container.add_child(colorRect)
@@ -105,7 +102,15 @@ func _add_player(nameString: String, color: Color, id: int):
 	players_list.add_child(container)
 	Game._players.append(id)
 	Game._bullets.append(id)
-	Game._data_players[id] = {"character" : 0}
+	
+	if is_multiplayer_authority():
+		var id_selected = option_button.get_selectable_item()
+		if id == multiplayer.get_unique_id():
+			option_button.select(id_selected)
+		option_button.set_item_disabled(id_selected, true)
+		Game._data_players[id] = {"character": id_selected}
+		rpc("send_actual_data", Game._data_players)
+	
 
 @rpc("any_peer", "reliable")
 func send_info(info: Dictionary) -> void:
@@ -120,6 +125,7 @@ func _paint_ready(id: int) -> void:
 func _on_play_pressed() -> void:
 	rpc("player_ready")
 	_paint_ready(multiplayer.get_unique_id())
+	option_button.disabled = true
 
 @rpc("reliable", "any_peer", "call_local")
 func player_ready() -> void:
@@ -134,22 +140,34 @@ func player_ready() -> void:
 			rpc("start_game")
 	
 func _character_changed(index: int) -> void:
+	# Change the selected character and replicate the info to others players |		
 	var id = multiplayer.get_unique_id()
+	option_button.set_item_disabled(Game._data_players[id].character, false)
 	Game._data_players[id].character = index
-	players_list.get_node(str(id) + "/character").text = str(index)
-	rpc("send_data_players", id ,Game._data_players[id])
+	option_button.set_item_disabled(index, true)
+	players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[index]
+	rpc("send_data_players", id, Game._data_players[id])
 	
 @rpc("any_peer", "reliable")
 func send_data_players(id: int, data: Dictionary) -> void:
+	# Send the info of a single player to others when the local change character
+	if Game._data_players.has(id):
+		option_button.set_item_disabled(Game._data_players[id].character, false)
 	Game._data_players[id] = data
-	players_list.get_node(str(id) + "/character").text = str(data.character)
+	option_button.set_item_disabled(data.character, true)
+	players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[data.character]
 	
 @rpc("any_peer", "reliable")
-func send_actual_data(data: Dictionary):
+func send_actual_data(data: Dictionary) -> void:
+	# Get and synchronize the info between all the players when a new peer is connected
 	Game._data_players = data
 	for key in Game._data_players:
 		var value = Game._data_players[key]
+		if key == multiplayer.get_unique_id():
+			option_button.select(value.character)
+		option_button.set_item_disabled(value.character, true)
 
 @rpc("any_peer", "call_local", "reliable")
 func start_game() -> void:
+	# start game 
 	get_tree().change_scene_to_file("res://scenes/game/main.tscn")

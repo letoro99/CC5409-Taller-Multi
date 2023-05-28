@@ -1,5 +1,5 @@
 class_name PBullet
-extends Area2D
+extends Node2D
 
 # Variables
 var enabled : bool
@@ -7,6 +7,7 @@ var valid_target : bool
 var direction : Vector2
 var target_position : Vector2 
 var portal : Portal
+var PB_collision_id : int = 1
 
 # Export variables
 @export var speed : float = 0

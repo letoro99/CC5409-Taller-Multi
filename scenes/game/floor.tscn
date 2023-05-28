@@ -23,7 +23,7 @@ shape = SubResource("RectangleShape2D_ynbhw")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 17
-collision_mask = 12
+collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_mv8ea")

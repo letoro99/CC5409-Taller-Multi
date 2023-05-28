@@ -6,10 +6,21 @@ const PORTALS_COLORS = {
 	1 	: [Color(0.1, 0.1, 0.9), Color(0.5, 0.5, 0.9)],
 	2 	: [Color(0.1, 0.9, 0.1), Color(0.5, 0.9, 0.5)],
 	3 	: [Color(0.9, 0.9, 0.1), Color(1, 0.7, 0.1)],
-	4 	: [Color(0.9, 0.9, 0.1), Color(1, 0.7, 0.1)],
-	5 	: [Color(0.9, 0.9, 0.1), Color(1, 0.7, 0.1)],
-	6 	: [Color(0.9, 0.9, 0.1), Color(1, 0.7, 0.1)],
-	7 	: [Color(0.9, 0.9, 0.1), Color(1, 0.7, 0.1)],
+	4 	: [Color(0.24, 0.04, 0), Color(0.5, 0.23, 0.16)],
+	5 	: [Color(0.7, 0.43, 0), Color(0.96, 0.44, 0.13)],
+	6 	: [Color(0.32, 0, 0.32), Color(0.52, 0, 0.76)],
+	7	: [Color(0.93, 0.27, 0.84), Color(0.75, 0, 0.65)],
+}
+
+const CHARACTER_PROFILES ={
+	0 : preload("res://assets/player/profile/red_profile.png"),
+	1 : preload("res://assets/player/profile/blue_profile.png"),
+	2 : preload("res://assets/player/profile/green_profile.png"),
+	3 : preload("res://assets/player/profile/yellow_profile.png"),
+	4 : preload("res://assets/player/profile/brown_profile.png"),
+	5 : preload("res://assets/player/profile/orange_profile.png"),
+	6 : preload("res://assets/player/profile/purple_profile.png"),
+	7 : preload("res://assets/player/profile/pink_profile.png"),
 }
 
 # Variables

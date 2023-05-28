@@ -6,15 +6,17 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_31xru"]
 radius = 30.0167
 
-[node name="portal_bullet" type="Area2D"]
-collision_layer = 8
-collision_mask = 17
+[node name="portal_bullet" type="Node2D"]
 script = ExtResource("1_00cum")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_31xru")
 
 [node name="Timer" type="Timer" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_j7jsd")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_31xru")
