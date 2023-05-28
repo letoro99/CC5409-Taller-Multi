@@ -43,7 +43,7 @@ func test_bola():
 	var element = bola.instantiate()
 	element.global_position = get_global_mouse_position()
 	get_tree().root.get_node("main").add_child(element)
-	
+
 func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
 	# Returns a Vector2 with the angle in randians between two Vector2
 	return vector1.angle_to(vector2)
@@ -77,12 +77,15 @@ func shoot_pbullet(index: int):
 		pbullet.portal = portalsList.get_child(index)
 		pbullet.speed = 40
 		pbullet.target_position = ray_cast.get_collision_point()
+		pbullet.valid_target = ray_cast.get_collider().get_parent().PB_collision_id == 0
 		
 		# Send info of player's bullet
 		pbullet.rpc("send_info", {
 			"position" : pbullet.position,
 			"direction" : pbullet.direction,
 			"speed" : pbullet.speed,
+			"target" : pbullet.target_position,
+			"valid" : pbullet.valid_target,
 			"portal" : index,
 			"player" : name
 		})

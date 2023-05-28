@@ -1,16 +1,18 @@
 extends StaticBody2D
 
-# FLOOR TO TEST PORTALS INSTANTIATIONS
-@onready var area_2d = $Area2D
+# Variables
+var PB_collision_id : int = 0
+var max_width : float
+var max_height : float
 var normal_floor : Vector2 = Vector2.UP
+
+# Children Nodes
+@onready var area_2d = $Area2D
 
 # Exports variables
 @export var size_cell : int
 @export var length_in_cells : int
 @export var portal_scene : PackedScene
-
-var max_width : float
-var max_height : float
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -47,7 +49,7 @@ func _get_vector_spawn(bullet_pos: Vector2) -> Vector2:
 			
 	return portal_position
 	
-func on_area2d_enter(area: Area2D):
+func on_area2d_enter(area: Area2D) -> void:
 	# This function resolve the collision of PBullets
 	if is_multiplayer_authority():
 		if area is PBullet:
@@ -58,9 +60,7 @@ func on_area2d_enter(area: Area2D):
 			if rotation == 90 and (global_position.x - area.global_position.x) < 0:
 				actual_normal = - normal_floor
 				
-			area.create_portal(actual_normal, _get_vector_spawn(area.global_position))
-			# global_position : bug en esquinas - menos grave
-			# target_position : bug en los clientes - grave
+			area.create_portal(actual_normal, _get_vector_spawn(area.global_position)) # global_position or target_position
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

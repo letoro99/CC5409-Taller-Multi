@@ -3,6 +3,7 @@ extends Node2D
 
 #Variables
 var canTeleport : bool = true
+var PB_collision_id : int = 1
 
 # Children Nodes
 @onready var sprite = $Sprite2D

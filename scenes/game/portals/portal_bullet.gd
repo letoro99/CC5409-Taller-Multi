@@ -2,10 +2,11 @@ class_name PBullet
 extends Area2D
 
 # Variables
-var direction : Vector2
-var portal : Portal
 var enabled : bool
+var valid_target : bool
+var direction : Vector2
 var target_position : Vector2 
+var portal : Portal
 
 # Export variables
 @export var speed : float = 0
@@ -28,9 +29,10 @@ func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 		enabled = true
 		
 		# Change position portal
-		portal.normal_portal = normal_floor
-		portal.global_position = pos_portal
-		portal.rotation = Vector2.UP.angle_to(normal_floor)
+		if valid_target:
+			portal.normal_portal = normal_floor
+			portal.global_position = pos_portal
+			portal.rotation = Vector2.UP.angle_to(normal_floor)
 		
 		# Delete PBullet
 		global_position = Vector2.ZERO
@@ -46,6 +48,7 @@ func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 			"position" : global_position,
 			"direction" : Vector2.ZERO,
 			"speed" : 0,
+			"valid" : true,
 			"player" : null
 		})
 
@@ -65,5 +68,6 @@ func send_info(info: Dictionary) -> void:
 	direction = info.direction
 	speed = info.speed
 	enabled = true
+	valid_target = info.valid
 	if info.player != null:
 		portal = get_tree().root.get_node("main/Players/" + info.player + "/Portals").get_child(info.portal)
