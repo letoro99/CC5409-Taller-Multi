@@ -1,11 +1,16 @@
 class_name PBullet
 extends Area2D
 
+# Variables
 var direction : Vector2
 var portal : Portal
 var enabled : bool
 var target_position : Vector2 
+
+# Export variables
 @export var speed : float = 0
+
+# Children Nodes
 @onready var timer = $Timer
 
 # Called when the node enters the scene tree for the first time.
@@ -17,7 +22,7 @@ func on_timer_timeout():
 	queue_free()
 
 func create_portal(normal_floor: Vector2, pos_portal: Vector2):
-	
+	# Instantiate a portal 
 	# Only server side has this code (Server side resolve the portal's spawns)
 	if is_multiplayer_authority():
 		enabled = true

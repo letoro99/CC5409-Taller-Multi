@@ -1,7 +1,7 @@
 class_name Character
 extends CharacterBody2D
 
-# Constants
+# Constants Character
 const SPEED = 400.0
 const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
@@ -45,12 +45,15 @@ func test_bola():
 	get_tree().root.get_node("main").add_child(element)
 	
 func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
+	# Returns a Vector2 with the angle in randians between two Vector2
 	return vector1.angle_to(vector2)
 
 func get_substraction_vectors(vector1: Vector2, vector2: Vector2):
+	# Returns a Vector2 with the 
 	return (vector1 - vector2).normalized()
 	
 func _set_position_portalgun():
+	# This functions set the posiiton and rotation of portal gun sprite
 	_directionAim = get_substraction_vectors(get_global_mouse_position(), self.global_position)
 	ray_cast.target_position = _directionAim * 3000
 
@@ -62,6 +65,7 @@ func _set_position_portalgun():
 		get_node("Sprite_PG").flip_h = false
 	
 func shoot_pbullet(index: int):
+	# This function create a bullet the parameters of the character and mouse's position
 	var pbullet = pbullets[index]
 
 	if pbullet.enabled:
@@ -108,6 +112,7 @@ func _handle_inputs() -> void:
 	_handle_movement_input()
 	
 func transportate(in_portal: Portal, out_portal: Portal):
+	# This function resolve the position and velocuity of a character when use a portal
 	global_position = out_portal.get_node("SpawnPosition").global_position
 	_set_position_portalgun()
 	rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h})

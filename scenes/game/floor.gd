@@ -21,6 +21,8 @@ func _ready():
 	
 	
 func _get_vector_spawn(bullet_pos: Vector2) -> Vector2:
+	# Calculate the position of the portal inside of this object when a bullet collided 
+	
 	var portal_position = bullet_pos
 	if rotation == 0:
 		var rang = [global_position.x - max_width, global_position.x + max_width]
@@ -46,6 +48,7 @@ func _get_vector_spawn(bullet_pos: Vector2) -> Vector2:
 	return portal_position
 	
 func on_area2d_enter(area: Area2D):
+	# This function resolve the collision of PBullets
 	if is_multiplayer_authority():
 		if area is PBullet:
 			var actual_normal : Vector2 = normal_floor
