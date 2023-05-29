@@ -198,7 +198,7 @@ transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition
 
 [node name="character" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 21
+collision_mask = 39
 script = ExtResource("1_d68wb")
 bola = ExtResource("2_uyhxu")
 pbullet_scene = ExtResource("2_xj5l1")
@@ -211,7 +211,7 @@ scale = Vector2(7, 7.9)
 texture = ExtResource("2_puqfs")
 hframes = 6
 vframes = 5
-frame = 2
+frame = 6
 
 [node name="Sprite_PG" type="Sprite2D" parent="."]
 position = Vector2(0, -100)
@@ -241,6 +241,7 @@ active = true
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_2i7i8")
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_mask = 32
 
 [node name="CollisionShape2" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_phuia")

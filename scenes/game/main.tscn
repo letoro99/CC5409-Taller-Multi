@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccbxnmjenb1hu"]
+[gd_scene load_steps=9 format=3 uid="uid://ccbxnmjenb1hu"]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1_v2exs"]
 [ext_resource type="PackedScene" uid="uid://cgmsb2w2b8xoq" path="res://scenes/game/characters/character.tscn" id="2_x0e3i"]
@@ -7,6 +7,7 @@
 [ext_resource type="TileSet" uid="uid://dxrxd68302yfd" path="res://tilemaps/main.tres" id="4_3wt2a"]
 [ext_resource type="Script" path="res://scenes/game/HealthBars.gd" id="6_hps7k"]
 [ext_resource type="PackedScene" uid="uid://cnruh2ooy73v3" path="res://scenes/game/hud/healthbar/healthbar.tscn" id="6_lhslj"]
+[ext_resource type="PackedScene" uid="uid://b1xwxcyty6yo" path="res://scenes/game/props/prop.tscn" id="8_bdtmh"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_v2exs")
@@ -126,3 +127,7 @@ script = ExtResource("6_hps7k")
 [node name="healthbar3" parent="HealthBars" instance=ExtResource("6_lhslj")]
 
 [node name="healthbar4" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="prop" parent="." instance=ExtResource("8_bdtmh")]
+position = Vector2(526, 860)
+metadata/_edit_group_ = true
