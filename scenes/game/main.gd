@@ -10,7 +10,10 @@ extends Node2D
 	load("res://assets/player/character_20x20_red.png"),
 	load("res://assets/player/character_20x20_blue.png"),
 	load("res://assets/player/character_20x20_green.png"),
-	load("res://assets/player/character_20x20_yellow.png")
+	load("res://assets/player/character_20x20_yellow.png"),
+	load("res://assets/player/character_20x20_brown.png"),
+	load("res://assets/player/character_20x20_orange.png"),
+	load("res://assets/player/character_20x20_purple.png")
 ]
 
 # Called when the node enters the scene tree for the first time.
@@ -33,6 +36,8 @@ func _ready():
 			
 			pbullet_left.name = ("pbleft_" + str(id))
 			pbullet_right.name = ("pbright_" + str(id))
+			pbullet_left.speed = 0
+			pbullet_right.speed = 0
 			
 			pbullet_left.modulate = Game.PORTALS_COLORS[Game._data_players[id].character][0]
 			pbullet_right.modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]

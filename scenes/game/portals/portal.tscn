@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cyfu4qcosiw0q" path="res://assets/portals/portal.png" id="2_g51bv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8xtlr"]
-radius = 19.0
+radius = 30.0
 height = 286.0
 
 [node name="portal" type="Node2D"]
@@ -18,6 +18,8 @@ texture = ExtResource("2_g51bv")
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = -1.5708
+collision_layer = 4
+collision_mask = 19
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(15, 0)
