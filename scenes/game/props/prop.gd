@@ -32,6 +32,10 @@ func _process(delta):
 	pass
 	
 func _physics_process(delta):
+	if is_multiplayer_authority():
+		if linear_velocity != Vector2.ZERO || angular_velocity != 0:
+			rpc("send_update", linear_velocity, global_position, rotation, angular_velocity)
+	
 	if linear_velocity.length() > 0 and linear_velocity.length() < 2500:
 		last_velocity = linear_velocity
 		
@@ -75,3 +79,9 @@ func _integrate_forces(state) -> void:
 		state.transform = Transform2D(0.0, outPortal.global_position + diffPositon)
 		isTeleporting = false
 	
+@rpc("unreliable_ordered")
+func send_update(lin_vel: Vector2, global_pos: Vector2, rot: float, ang_vel: float):
+	linear_velocity = lin_vel;
+	global_position = global_pos;
+	rotation = rot;
+	angular_velocity = ang_vel;

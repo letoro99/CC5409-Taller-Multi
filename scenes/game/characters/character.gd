@@ -16,7 +16,7 @@ const DECELERATION = 2
 	get_tree().root.get_node("main/HealthBars/healthbar4")
 ]
 
-var myHealthBar : Healthbar;
+@onready var myHealthBar : Healthbar = null;
 
 # Variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -68,6 +68,8 @@ func _ready():
 	else:
 		anim_tree.active = false
 	
+	await get_tree().create_timer(1).timeout;
+	myHealthBar = healthbars[get_player_index()];
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -223,7 +225,8 @@ func _physics_process(delta):
 func hpChanged():
 	# here we should send the signals 
 	# to the corresponding nodes that read HP
-	myHealthBar = healthbars[get_player_index()]
+	if myHealthBar == null:
+		myHealthBar = healthbars[get_player_index()]
 	myHealthBar.setMaxHealth(maxHP);
 	myHealthBar.setHP(hp);
 	myHealthBar.set_health_bar();
@@ -243,17 +246,18 @@ func decreaseHP(amount: float):
 
 # =============== DAMAGE API =================
 func dealDamage(damage: float, damager: Node = null):
-	# here we would implement extra effects
-	hit_immune = 5;
-	decreaseHP(damage);
-	var damageText = load("res://scenes/game/damageText/damage_text.tscn");
-	get_tree().root.get_node("main").add_child(damageText.instantiate());
-	Debug.print(damage);
-	# damageText.global_position = self.global_position;
-	#damageText.damage = int(round(damage));
-	
-	if damager:
-		lastDamager = damager;
+	if is_multiplayer_authority():
+		# here we would implement extra effects
+		if hit_immune <= 0:
+			hit_immune = 2;
+			decreaseHP(damage);
+		#var damageText = load("res://scenes/game/damageText/damage_text.tscn");
+		#get_tree().root.get_node("main").add_child(damageText.instantiate());
+		#Debug.print(damage);
+		# damageText.global_position = self.global_position;
+		#damageText.damage = int(round(damage));
+			if damager:
+				lastDamager = damager;
 
 @rpc("any_peer","unreliable_ordered")
 func rpc_test(texto: String) -> void:

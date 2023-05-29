@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://lbin2tgikqkk" path="res://scenes/game/floor.tscn" id="3_emfaq"]
 [ext_resource type="PackedScene" uid="uid://b3oi57wa1ynk4" path="res://scenes/game/portals/portal_bullet.tscn" id="3_icct6"]
 [ext_resource type="TileSet" uid="uid://dxrxd68302yfd" path="res://tilemaps/main.tres" id="4_3wt2a"]
-[ext_resource type="PackedScene" uid="uid://b1xwxcyty6yo" path="res://scenes/game/props/prop.tscn" id="6_4y63t"]
 [ext_resource type="Script" path="res://scenes/game/HealthBars.gd" id="6_hps7k"]
 [ext_resource type="PackedScene" uid="uid://cnruh2ooy73v3" path="res://scenes/game/hud/healthbar/healthbar.tscn" id="6_lhslj"]
 [ext_resource type="PackedScene" uid="uid://b1xwxcyty6yo" path="res://scenes/game/props/prop.tscn" id="8_bdtmh"]
@@ -131,14 +130,18 @@ script = ExtResource("6_hps7k")
 
 [node name="Props" type="Node2D" parent="."]
 
-[node name="prop" parent="." instance=ExtResource("6_4y63t")]
+[node name="prop" parent="." instance=ExtResource("8_bdtmh")]
 position = Vector2(736, 896)
+prop_mass = 5.0
 
-[node name="prop2" parent="." instance=ExtResource("6_4y63t")]
+[node name="prop2" parent="." instance=ExtResource("8_bdtmh")]
 position = Vector2(1568, 448)
+prop_mass = 5.0
 
-[node name="prop3" parent="." instance=ExtResource("6_4y63t")]
+[node name="prop3" parent="." instance=ExtResource("8_bdtmh")]
 position = Vector2(3104, 1024)
+prop_mass = 5.0
 
-[node name="prop4" parent="." instance=ExtResource("6_4y63t")]
+[node name="prop4" parent="." instance=ExtResource("8_bdtmh")]
 position = Vector2(1600, 1472)
+prop_mass = 5.0
