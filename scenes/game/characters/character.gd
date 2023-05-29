@@ -237,6 +237,10 @@ func hpChanged():
 	
 	if hp <= 0:
 		queue_free();
+		var explosion = load("res://scenes/game/explosion/explosion.tscn");
+		var new_explosion = explosion.instantiate();
+		new_explosion.global_position = global_position;
+		get_tree().root.get_node("main").add_child(new_explosion);
 		# process death sequence
 
 func decreaseHP(amount: float):
