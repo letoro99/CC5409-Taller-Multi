@@ -89,7 +89,7 @@ func get_substraction_vectors(vector1: Vector2, vector2: Vector2):
 func _set_position_portalgun():
 	# This functions set the posiiton and rotation of portal gun sprite
 	_directionAim = get_substraction_vectors(get_global_mouse_position(), self.global_position)
-	ray_cast.target_position = _directionAim * 3000
+	ray_cast.target_position = _directionAim * 10000
 
 	get_node("Sprite_PG").global_position = global_position + 100 * _directionAim
 	get_node("Sprite_PG").rotation_degrees = rad_to_deg(get_angle_two_vectors(Vector2.UP, _directionAim))
