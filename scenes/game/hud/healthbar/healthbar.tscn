@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnruh2ooy73v3"]
+
+[ext_resource type="Script" path="res://scenes/game/hud/healthbar/healthbar.gd" id="1_kdhe2"]
+
+[node name="healthbar" type="ProgressBar"]
+modulate = Color(0, 1, 0, 1)
+offset_right = 479.0
+offset_bottom = 59.0
+show_percentage = false
+script = ExtResource("1_kdhe2")

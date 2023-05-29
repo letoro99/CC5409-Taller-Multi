@@ -7,10 +7,32 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 
+# References
+
+@onready var healthbars = [
+	get_tree().root.get_node("main/HealthBars/healthbar1"),
+	get_tree().root.get_node("main/HealthBars/healthbar2"),
+	get_tree().root.get_node("main/HealthBars/healthbar3"),
+	get_tree().root.get_node("main/HealthBars/healthbar4")
+]
+
+@onready var myHealthBar : Healthbar = null;
+
 # Variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var last_velocity : Vector2
 var _directionAim : Vector2
+
+# Player stats 
+var maxHP = 20;
+
+# Player current effects
+var hp = maxHP;				# player health
+var stun = 0;				# stun time
+var lives = 0;				# to implement: lives
+var hit_immune = 0;			# gives immunity to hits for n frames
+
+var lastDamager = null;
 
 @onready var portalsList = $Portals
 
@@ -29,6 +51,15 @@ var directionMove : Vector2
 var angleVelocity : float = 0.0 
 var initialPosition : Vector2
 
+func get_player_index():
+	var nodes = get_parent().get_children();
+	var names = []
+	for i in nodes:
+		names.append(i.name.to_int());
+	names.sort();
+	return names.find(self.name.to_int());
+		
+
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
@@ -36,6 +67,9 @@ func _ready():
 		anim_tree.active = true
 	else:
 		anim_tree.active = false
+	
+	await get_tree().create_timer(1).timeout;
+	myHealthBar = healthbars[get_player_index()];
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -108,6 +142,7 @@ func _handle_movement_input() -> void:
 		shoot_pbullet(1)
 		
 	if Input.is_key_pressed(KEY_R):
+		print(name, "resetted")
 		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position
 		
 
@@ -125,6 +160,13 @@ func transportate(in_portal: Portal, out_portal: Portal):
 		velocity = out_portal.normal_portal * magnitude
 		
 func _physics_process(delta):
+	if hit_immune > 0:
+		$Pivot/Sprite2D.visible = !$Pivot/Sprite2D.visible;
+		hit_immune -= delta;
+	else:
+		hit_immune = 0;
+		$Pivot/Sprite2D.visible = true;
+	
 	if is_multiplayer_authority():
 		_handle_inputs()
 			
@@ -179,11 +221,61 @@ func _physics_process(delta):
 		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
 		
 
+# =============== HEALTH API =================
+func hpChanged():
+	# here we should send the signals 
+	# to the corresponding nodes that read HP
+	if myHealthBar == null:
+		myHealthBar = healthbars[get_player_index()]
+	myHealthBar.setMaxHealth(maxHP);
+	myHealthBar.setHP(hp);
+	myHealthBar.set_health_bar();
+	if is_multiplayer_authority():
+		Debug.print("hpChanged para %s" % name);
+		rpc("send_stats", int(round(hp)), int(round(hit_immune)));
+	print(myHealthBar.name)
+	
+	if hp <= 0:
+		queue_free();
+		# process death sequence
+
+func decreaseHP(amount: float):
+	# decreases HP in a certain amount 
+	hp -= amount;
+	self.hpChanged()
+
+# =============== DAMAGE API =================
+func dealDamage(damage: float, damager: Node = null):
+	if is_multiplayer_authority():
+		# here we would implement extra effects
+		if hit_immune <= 0:
+			hit_immune = 2;
+			decreaseHP(damage);
+		#var damageText = load("res://scenes/game/damageText/damage_text.tscn");
+		#get_tree().root.get_node("main").add_child(damageText.instantiate());
+		#Debug.print(damage);
+		# damageText.global_position = self.global_position;
+		#damageText.damage = int(round(damage));
+			if damager:
+				lastDamager = damager;
+
+@rpc("any_peer","unreliable_ordered")
+func rpc_test(texto: String) -> void:
+	Debug.print("Recibido el mensaje: %s" % texto)
+
+@rpc("unreliable_ordered")
+func send_stats(hp_value: int, hit_immunity: int) -> void:
+	Debug.print("Recibido send_stats para nodo %s" % name)
+	hp = hp_value; 
+	hit_immune = hit_immunity
+	hpChanged();
+
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
 	$Pivot/Sprite2D.frame = frame
 	$Pivot.scale.x = _scale
+
 
 @rpc("unreliable_ordered")	
 func _send_position_pg(data: Dictionary) -> void:
