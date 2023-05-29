@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b1xwxcyty6yo" path="res://scenes/game/props/prop.tscn" id="6_4y63t"]
 [ext_resource type="Script" path="res://scenes/game/HealthBars.gd" id="6_hps7k"]
 [ext_resource type="PackedScene" uid="uid://cnruh2ooy73v3" path="res://scenes/game/hud/healthbar/healthbar.tscn" id="6_lhslj"]
+[ext_resource type="PackedScene" uid="uid://b1xwxcyty6yo" path="res://scenes/game/props/prop.tscn" id="8_bdtmh"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_v2exs")
