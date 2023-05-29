@@ -263,7 +263,7 @@ func dealDamage(damage: float, damager: Node = null):
 func rpc_test(texto: String) -> void:
 	Debug.print("Recibido el mensaje: %s" % texto)
 
-@rpc("unreliable_ordered")
+@rpc("reliable")
 func send_stats(hp_value: int, hit_immunity: int) -> void:
 	Debug.print("Recibido send_stats para nodo %s" % name)
 	hp = hp_value; 
