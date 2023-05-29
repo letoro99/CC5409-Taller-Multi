@@ -16,11 +16,13 @@ extends Node2D
 	load("res://assets/player/character_20x20_purple.png")
 ]
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if is_multiplayer_authority():
 		Debug.print("initialization game")
 		Game._players.sort()
+		var player_count = 0;
 		for i in Game._players.size():
 			var id = Game._players[i]
 			var player : Character = _player_scene.instantiate()
@@ -33,6 +35,7 @@ func _ready():
 			player.get_node("Pivot/Sprite2D").texture = sprites_characters[Game._data_players[id].character]
 			player.get_node("Portals").get_child(0).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][0]
 			player.get_node("Portals").get_child(1).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]
+			
 			
 			pbullet_left.name = ("pbleft_" + str(id))
 			pbullet_right.name = ("pbright_" + str(id))
@@ -47,6 +50,7 @@ func _ready():
 			
 			player.pbullets = [pbullet_left, pbullet_right]
 			_players.add_child(player, true)
+			player_count+=1
 			
 			if id != multiplayer.get_unique_id():
 				rpc_id(id, "send_info", { "position" : player.position})

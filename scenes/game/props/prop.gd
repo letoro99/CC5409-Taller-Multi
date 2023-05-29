@@ -51,7 +51,7 @@ func transportate(in_portal: Portal, out_portal: Portal):
 func _on_body_entered(body):
 	if body is Character:
 		var damageCalculation = 0.001*self.linear_velocity.length()*prop_mass;
-		if damageCalculation >= 1 and last_pushed != body:
+		if damageCalculation >= 1:
 			# deal damage process!
 			body.velocity += self.linear_velocity*prop_mass;
 			body.dealDamage(damageCalculation);

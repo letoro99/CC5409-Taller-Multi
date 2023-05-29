@@ -9,6 +9,15 @@ const DECELERATION = 2
 
 # References
 
+@onready var healthbars = [
+	get_tree().root.get_node("main/HealthBars/healthbar1"),
+	get_tree().root.get_node("main/HealthBars/healthbar2"),
+	get_tree().root.get_node("main/HealthBars/healthbar3"),
+	get_tree().root.get_node("main/HealthBars/healthbar4")
+]
+
+var myHealthBar : Healthbar;
+
 # Variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var last_velocity : Vector2
@@ -42,6 +51,15 @@ var directionMove : Vector2
 var angleVelocity : float = 0.0 
 var initialPosition : Vector2
 
+func get_player_index():
+	var nodes = get_parent().get_children();
+	var names = []
+	for i in nodes:
+		names.append(i.name.to_int());
+	names.sort();
+	return names.find(self.name.to_int());
+		
+
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
@@ -49,6 +67,7 @@ func _ready():
 		anim_tree.active = true
 	else:
 		anim_tree.active = false
+	
 
 # ONLY FOR TEST RIGIDBODIES 
 # DELETE WHEN PROPRS ARE CREATED
@@ -204,6 +223,14 @@ func _physics_process(delta):
 func hpChanged():
 	# here we should send the signals 
 	# to the corresponding nodes that read HP
+	myHealthBar = healthbars[get_player_index()]
+	myHealthBar.setMaxHealth(maxHP);
+	myHealthBar.setHP(hp);
+	myHealthBar.set_health_bar();
+	if is_multiplayer_authority():
+		Debug.print("hpChanged para %s" % name);
+		rpc("send_stats", int(round(hp)), int(round(hit_immune)));
+	print(myHealthBar.name)
 	
 	if hp <= 0:
 		queue_free();
@@ -223,17 +250,28 @@ func dealDamage(damage: float, damager: Node = null):
 	get_tree().root.get_node("main").add_child(damageText.instantiate());
 	Debug.print(damage);
 	# damageText.global_position = self.global_position;
-	#damageText.damage = int(round(damage));d
+	#damageText.damage = int(round(damage));
 	
 	if damager:
 		lastDamager = damager;
-	
+
+@rpc("any_peer","unreliable_ordered")
+func rpc_test(texto: String) -> void:
+	Debug.print("Recibido el mensaje: %s" % texto)
+
+@rpc("unreliable_ordered")
+func send_stats(hp_value: int, hit_immunity: int) -> void:
+	Debug.print("Recibido send_stats para nodo %s" % name)
+	hp = hp_value; 
+	hit_immune = hit_immunity
+	hpChanged();
 
 @rpc("unreliable_ordered")
 func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
 	$Pivot/Sprite2D.frame = frame
 	$Pivot.scale.x = _scale
+
 
 @rpc("unreliable_ordered")	
 func _send_position_pg(data: Dictionary) -> void:
