@@ -105,3 +105,4 @@ zoom = Vector2(0.28, 0.28)
 
 [node name="prop" parent="." instance=ExtResource("6_4y63t")]
 position = Vector2(738, 513)
+prop_mass = 5.0

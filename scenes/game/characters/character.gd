@@ -7,18 +7,21 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 
+# References
+
 # Variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var last_velocity : Vector2
 var _directionAim : Vector2
 
 # Player stats 
-var maxHP = 100;
+var maxHP = 20;
 
 # Player current effects
 var hp = maxHP;				# player health
 var stun = 0;				# stun time
 var lives = 0;				# to implement: lives
+var hit_immune = 0;			# gives immunity to hits for n frames
 
 var lastDamager = null;
 
@@ -105,6 +108,7 @@ func _handle_movement_input() -> void:
 		shoot_pbullet(1)
 		
 	if Input.is_key_pressed(KEY_R):
+		print(name, "resetted")
 		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position
 		
 
@@ -122,6 +126,13 @@ func transportate(in_portal: Portal, out_portal: Portal):
 		velocity = out_portal.normal_portal * magnitude
 		
 func _physics_process(delta):
+	if hit_immune > 0:
+		$Pivot/Sprite2D.visible = !$Pivot/Sprite2D.visible;
+		hit_immune -= delta;
+	else:
+		hit_immune = 0;
+		$Pivot/Sprite2D.visible = true;
+	
 	if is_multiplayer_authority():
 		_handle_inputs()
 			
@@ -183,7 +194,6 @@ func hpChanged():
 	
 	if hp <= 0:
 		queue_free();
-		pass
 		# process death sequence
 
 func decreaseHP(amount: float):
@@ -194,7 +204,13 @@ func decreaseHP(amount: float):
 # =============== DAMAGE API =================
 func dealDamage(damage: float, damager: Node = null):
 	# here we would implement extra effects
+	hit_immune = 5;
 	decreaseHP(damage);
+	var damageText = load("res://scenes/game/damageText/damage_text.tscn");
+	get_tree().root.get_node("main").add_child(damageText.instantiate());
+	Debug.print(damage);
+	# damageText.global_position = self.global_position;
+	#damageText.damage = int(round(damage));d
 	
 	if damager:
 		lastDamager = damager;
