@@ -107,7 +107,9 @@ func _add_player(nameString: String, color: Color, id: int):
 		var id_selected = option_button.get_selectable_item()
 		if id == multiplayer.get_unique_id():
 			option_button.select(id_selected)
+			players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[id_selected]
 		option_button.set_item_disabled(id_selected, true)
+		players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[id_selected]
 		Game._data_players[id] = {"character": id_selected}
 		rpc("send_actual_data", Game._data_players)
 	
@@ -166,6 +168,8 @@ func send_actual_data(data: Dictionary) -> void:
 		if key == multiplayer.get_unique_id():
 			option_button.select(value.character)
 		option_button.set_item_disabled(value.character, true)
+		if players_list.get_node(str(key) + "/character") != null:
+			players_list.get_node(str(key) + "/character").texture = Game.CHARACTER_PROFILES[value.character]
 
 @rpc("any_peer", "call_local", "reliable")
 func start_game() -> void:
