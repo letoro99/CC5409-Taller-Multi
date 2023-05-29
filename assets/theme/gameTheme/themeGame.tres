@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bpfiddf0lxbq4"]
+
+[ext_resource type="StyleBox" uid="uid://cec7bnaq4o0wg" path="res://assets/theme/gameTheme/box_themeGame.tres" id="1_o8jg3"]
+[ext_resource type="FontFile" uid="uid://dpordfcrjhmi1" path="res://assets/fonts/BitPotionExt.ttf" id="1_stlpv"]
+
+[resource]
+default_font = ExtResource("1_stlpv")
+default_font_size = 35
+Button/styles/panel = ExtResource("1_o8jg3")
+MarginContainer/styles/panel = ExtResource("1_o8jg3")
+PanelContainer/styles/panel = ExtResource("1_o8jg3")

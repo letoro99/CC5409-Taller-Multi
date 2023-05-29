@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1xwxcyty6yo"]
+
+[ext_resource type="Script" path="res://scenes/game/props/prop.gd" id="1_vwdqt"]
+[ext_resource type="Texture2D" uid="uid://bs4rkm74ueip2" path="res://assets/props/cardboard_box.png" id="1_yhr5p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pv5gs"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jm00o"]
+size = Vector2(120, 120)
+
+[node name="prop" type="RigidBody2D"]
+collision_layer = 32
+collision_mask = 39
+mass = 0.16
+max_contacts_reported = 5
+contact_monitor = true
+can_sleep = false
+freeze_mode = 1
+script = ExtResource("1_vwdqt")
+
+[node name="CardboardBox" type="Sprite2D" parent="."]
+scale = Vector2(5, 5)
+texture = ExtResource("1_yhr5p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pv5gs")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_jm00o")

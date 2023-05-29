@@ -59,6 +59,7 @@ alt_shoot={
 2d_physics/layer_3="Portal"
 2d_physics/layer_4="Bullet"
 2d_physics/layer_5="Floor_portal"
+2d_physics/layer_6="Props"
 
 [rendering]
 

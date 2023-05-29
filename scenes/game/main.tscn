@@ -113,3 +113,24 @@ spawn_limit = 4
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1920, 1180)
 zoom = Vector2(0.28, 0.28)
+<<<<<<< Updated upstream
+=======
+
+<<<<<<< Updated upstream
+[node name="HealthBars" type="Node2D" parent="."]
+script = ExtResource("6_hps7k")
+
+[node name="healthbar1" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="healthbar2" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="healthbar3" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="healthbar4" parent="HealthBars" instance=ExtResource("6_lhslj")]
+=======
+[node name="prop" parent="." instance=ExtResource("6_4y63t")]
+position = Vector2(738, 513)
+collision_mask = 7
+prop_mass = 5.0
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
