@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccbxnmjenb1hu"]
+[gd_scene load_steps=8 format=3 uid="uid://ccbxnmjenb1hu"]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1_v2exs"]
 [ext_resource type="PackedScene" uid="uid://cgmsb2w2b8xoq" path="res://scenes/game/characters/character.tscn" id="2_x0e3i"]
 [ext_resource type="PackedScene" uid="uid://lbin2tgikqkk" path="res://scenes/game/floor.tscn" id="3_emfaq"]
 [ext_resource type="PackedScene" uid="uid://b3oi57wa1ynk4" path="res://scenes/game/portals/portal_bullet.tscn" id="3_icct6"]
 [ext_resource type="TileSet" uid="uid://dxrxd68302yfd" path="res://tilemaps/main.tres" id="4_3wt2a"]
+[ext_resource type="Script" path="res://scenes/game/HealthBars.gd" id="6_hps7k"]
+[ext_resource type="PackedScene" uid="uid://cnruh2ooy73v3" path="res://scenes/game/hud/healthbar/healthbar.tscn" id="6_lhslj"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_v2exs")
@@ -113,3 +115,14 @@ spawn_limit = 4
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1920, 1180)
 zoom = Vector2(0.28, 0.28)
+
+[node name="HealthBars" type="Node2D" parent="."]
+script = ExtResource("6_hps7k")
+
+[node name="healthbar1" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="healthbar2" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="healthbar3" parent="HealthBars" instance=ExtResource("6_lhslj")]
+
+[node name="healthbar4" parent="HealthBars" instance=ExtResource("6_lhslj")]

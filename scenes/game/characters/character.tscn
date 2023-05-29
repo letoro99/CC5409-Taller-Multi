@@ -211,7 +211,7 @@ scale = Vector2(7, 7.9)
 texture = ExtResource("2_puqfs")
 hframes = 6
 vframes = 5
-frame = 6
+frame = 2
 
 [node name="Sprite_PG" type="Sprite2D" parent="."]
 position = Vector2(0, -100)
