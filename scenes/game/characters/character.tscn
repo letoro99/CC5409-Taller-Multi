@@ -240,6 +240,11 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_2i7i8")
 
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_phuia")
+
 [node name="RayCast2D" type="RayCast2D" parent="."]
 collision_mask = 20
 collide_with_areas = true
