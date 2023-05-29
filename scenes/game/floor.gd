@@ -52,15 +52,14 @@ func _get_vector_spawn(bullet_pos: Vector2) -> Vector2:
 func on_area2d_enter(area: Area2D) -> void:
 	# This function resolve the collision of PBullets
 	if is_multiplayer_authority():
-		if area is PBullet:
-			var actual_normal : Vector2 = normal_floor
-			if rotation == 0 and (global_position.y - area.global_position.y) < 0:
-				actual_normal = - normal_floor
+		var actual_normal : Vector2 = normal_floor
+		if rotation == 0 and (global_position.y - area.global_position.y) < 0:
+			actual_normal = - normal_floor
 				
-			if rotation == 90 and (global_position.x - area.global_position.x) < 0:
-				actual_normal = - normal_floor
+		if rotation == 90 and (global_position.x - area.global_position.x) < 0:
+			actual_normal = - normal_floor
 				
-			area.create_portal(actual_normal, _get_vector_spawn(area.global_position)) # global_position or target_position
+		area.get_parent().create_portal(actual_normal, _get_vector_spawn(area.global_position)) # global_position or target_position
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
