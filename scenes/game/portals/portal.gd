@@ -22,8 +22,9 @@ func disabling_portal():
 	canTeleport = true
 
 func on_area_body_entered(body: Node2D) -> void:
-	# Resolve the teleportation of the given body
-	if canTeleport and (body is Character or body is Props): # Can be changed with mask/groups ?
+	print(body.name);
+	if canTeleport and (body is Character or body is Props or body is Crate): # Can be changed with grpous ?
+
 		disabling_portal()
 		another_portal.disabling_portal()		
 		body.transportate(self, another_portal)

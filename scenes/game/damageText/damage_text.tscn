@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1n3bvbj1cpcs"]
+
+[ext_resource type="Script" path="res://damageText.gd" id="1_ya4bi"]
+
+[node name="damageText" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ya4bi")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 23.0
+text = "100"
