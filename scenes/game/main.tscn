@@ -115,8 +115,6 @@ spawn_limit = 4
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1920, 1180)
-28, 0.28)
-
 zoom = Vector2(0.28, 0.28)
 
 [node name="HealthBars" type="Node2D" parent="."]
