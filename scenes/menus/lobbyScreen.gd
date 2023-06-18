@@ -89,6 +89,7 @@ func _on_peer_disconnected(id: int) -> void:
 	Debug.print("peer_disconnected %d" % id)
 	
 func _on_server_disconnected() -> void:
+	Game.delete_data()
 	print("server_disconnected")
 
 func _add_player(nameString: String, color: Color, id: int):
@@ -115,6 +116,7 @@ func _add_player(nameString: String, color: Color, id: int):
 	players_list.add_child(container)
 	Game._players.append(id)
 	Game._bullets.append(id)
+	Game._name_players[id] = nameString
 	
 	if is_multiplayer_authority():
 		var id_selected = option_button.get_selectable_item()
@@ -166,7 +168,7 @@ func player_ready() -> void:
 		for ok in status.values():
 			all_ok = all_ok and ok
 		if all_ok:
-			rpc("start_game")
+			rpc("start_game", level_path)
 	
 @rpc("any_peer", "reliable")
 func send_data_players(id: int, data: Dictionary) -> void:
@@ -194,6 +196,6 @@ func send_level_data(index_level: int) -> void:
 	level_path = options_levels_path[index_level]
 
 @rpc("any_peer", "call_local", "reliable")
-func start_game() -> void:
+func start_game(path) -> void:
 	# start game 
-	get_tree().change_scene_to_file(level_path)
+	get_tree().change_scene_to_file(path)

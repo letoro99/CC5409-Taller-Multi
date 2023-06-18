@@ -7,8 +7,10 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 
-# References
+# Signals
+signal player_death
 
+# References
 @onready var healthbars = [
 	get_tree().root.get_node("main/HealthBars/healthbar1"),
 	get_tree().root.get_node("main/HealthBars/healthbar2"),
@@ -59,7 +61,6 @@ func get_player_index():
 	names.sort();
 	return names.find(self.name.to_int());
 		
-
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
@@ -138,7 +139,6 @@ func _handle_movement_input() -> void:
 		print(name, "resetted")
 		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position
 		
-
 func _handle_inputs() -> void:
 	_handle_movement_input()
 	
@@ -213,7 +213,6 @@ func _physics_process(delta):
 		_set_position_portalgun()
 		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
 		
-
 # =============== HEALTH API =================
 func hpChanged():
 	# here we should send the signals 
@@ -229,6 +228,7 @@ func hpChanged():
 	print(myHealthBar.name)
 	
 	if hp <= 0:
+		player_death.emit()
 		queue_free();
 		var explosion = load("res://scenes/game/explosion/explosion.tscn");
 		var new_explosion = explosion.instantiate();
@@ -255,7 +255,7 @@ func dealDamage(damage: float, damager: Node = null):
 		#damageText.damage = int(round(damage));
 			if damager:
 				lastDamager = damager;
-
+				
 @rpc("any_peer","unreliable_ordered")
 func rpc_test(texto: String) -> void:
 	Debug.print("Recibido el mensaje: %s" % texto)
@@ -272,7 +272,6 @@ func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
 	$Pivot/Sprite2D.frame = frame
 	$Pivot.scale.x = _scale
-
 
 @rpc("unreliable_ordered")	
 func _send_position_pg(data: Dictionary) -> void:

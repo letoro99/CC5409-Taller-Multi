@@ -26,7 +26,9 @@ const CHARACTER_PROFILES ={
 # Variables
 var _players : Array = []
 var _bullets : Array = []
+var _name_players : Dictionary = {}
 var _data_players : Dictionary = {}
+var _death_players : int = 0
 var _thread = null
 
 signal upnp_completed(error)
@@ -55,3 +57,10 @@ func _ready():
 func _exit_tree():
 	# Wait for thread finish here to handle game exit while the thread is running.
 	_thread.wait_to_finish()
+
+func delete_data() -> void:
+	_players = []
+	_bullets = []
+	_name_players = {}
+	_data_players = {}
+	_death_players = 0
