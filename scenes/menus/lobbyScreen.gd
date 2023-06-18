@@ -12,13 +12,21 @@ const PORT = 5000
 
 @onready var start = $Start
 @onready var pending = $Pending
+@onready var level_selector = $Pending/PanelContainer/VBoxContainer/levelSelector
 
 @onready var players_list = $Pending/PanelContainer2/MarginContainer/Pending/PanelContainer/PlayersList
 @onready var play = $Pending/HBoxContainer/Play
 @onready var option_button = $Pending/PanelContainer/VBoxContainer/OptionButton
+@onready var option_level = $Pending/PanelContainer/VBoxContainer/levelSelector/OptionButton
 
 # { id: true }
 var status = {1 : false}
+var options_levels_path = [
+	"res://scenes/level/level1.tscn", 	# Laboratory
+	"res://scenes/level/level2.tscn",	# Cave
+	"res://scenes/level/level3.tscn"	# Castle
+]
+var level_path
 
 func _ready():
 	host.pressed.connect(_on_host_pressed)
@@ -30,12 +38,16 @@ func _ready():
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	start.show()
 	pending.hide()
+	level_selector.hide()
 	user.text = OS.get_environment("USERNAME")
 	
 	play.pressed.connect(_on_play_pressed)
 	option_button.item_selected.connect(_character_changed)
+	option_level.item_selected.connect(_level_changed)
 	
 	Game.upnp_completed.connect(_on_upnp_completed)
+	
+	level_path = options_levels_path[0]
 
 func _on_upnp_completed(state) -> void:
 	print(state)
@@ -49,6 +61,7 @@ func _on_host_pressed() -> void:
 	start.hide()
 	_add_player(user.text, color_name.get_picker().color, multiplayer.get_unique_id())
 	pending.show()
+	level_selector.show()
 
 func _on_join_pressed() -> void:
 	Debug.print("join")
@@ -112,12 +125,6 @@ func _add_player(nameString: String, color: Color, id: int):
 		players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[id_selected]
 		Game._data_players[id] = {"character": id_selected}
 		rpc("send_actual_data", Game._data_players)
-	
-
-@rpc("any_peer", "reliable")
-func send_info(info: Dictionary) -> void:
-	var id = multiplayer.get_remote_sender_id()
-	_add_player(info.name, info.color_name, id)
 
 func _paint_ready(id: int) -> void:
 	for child in players_list.get_children():
@@ -128,6 +135,26 @@ func _on_play_pressed() -> void:
 	rpc("player_ready")
 	_paint_ready(multiplayer.get_unique_id())
 	option_button.disabled = true
+
+func _character_changed(index: int) -> void:
+	# Change the selected character and replicate the info to others players |		
+	var id = multiplayer.get_unique_id()
+	option_button.set_item_disabled(Game._data_players[id].character, false)
+	Game._data_players[id].character = index
+	option_button.set_item_disabled(index, true)
+	players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[index]
+	rpc("send_data_players", id, Game._data_players[id])
+
+func _level_changed(index: int) -> void:
+	# Change the selected level and replicate the info to others players
+	# This functions can only be called by the server side
+	level_path = options_levels_path[index]
+	rpc("send_level_data", index)
+
+@rpc("any_peer", "reliable")
+func send_info(info: Dictionary) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	_add_player(info.name, info.color_name, id)
 
 @rpc("reliable", "any_peer", "call_local")
 func player_ready() -> void:
@@ -140,15 +167,6 @@ func player_ready() -> void:
 			all_ok = all_ok and ok
 		if all_ok:
 			rpc("start_game")
-	
-func _character_changed(index: int) -> void:
-	# Change the selected character and replicate the info to others players |		
-	var id = multiplayer.get_unique_id()
-	option_button.set_item_disabled(Game._data_players[id].character, false)
-	Game._data_players[id].character = index
-	option_button.set_item_disabled(index, true)
-	players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[index]
-	rpc("send_data_players", id, Game._data_players[id])
 	
 @rpc("any_peer", "reliable")
 func send_data_players(id: int, data: Dictionary) -> void:
@@ -171,7 +189,11 @@ func send_actual_data(data: Dictionary) -> void:
 		if players_list.get_node(str(key) + "/character") != null:
 			players_list.get_node(str(key) + "/character").texture = Game.CHARACTER_PROFILES[value.character]
 
+@rpc("any_peer", "reliable")
+func send_level_data(index_level: int) -> void:
+	level_path = options_levels_path[index_level]
+
 @rpc("any_peer", "call_local", "reliable")
 func start_game() -> void:
 	# start game 
-	get_tree().change_scene_to_file("res://scenes/game/main.tscn")
+	get_tree().change_scene_to_file(level_path)

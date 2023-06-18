@@ -1,10 +1,19 @@
 extends Node2D
 
+### IMPORTS ###
+## Scenes
 @export var _player_scene : PackedScene
 @export var _bullet_scene : PackedScene
+
+## Nodes
 @onready var _players = $Players
 @onready var _spawners = $Spawner
+
+## Bullets
 @onready var _pbullets = $Pbullets
+
+## Areas
+@onready var harmful_area = $harmfulArea
 
 @onready var sprites_characters = [
 	load("res://assets/player/character_20x20_red.png"),
@@ -17,6 +26,8 @@ extends Node2D
 	load("res://assets/player/character_20x20_pink.png")
 ]
 
+### FUNCTIONS ###
+## Godot functions
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,7 +68,8 @@ func _ready():
 				rpc_id(id, "send_info", { "position" : player.position})
 	
 		rpc("update_data_game")
-		
+
+## RPC functions	
 @rpc("reliable")
 func send_info(dic: Dictionary) -> void:
 	var id = multiplayer.get_unique_id()

@@ -71,13 +71,6 @@ func _ready():
 	await get_tree().create_timer(1).timeout;
 	myHealthBar = healthbars[get_player_index()];
 
-# ONLY FOR TEST RIGIDBODIES 
-# DELETE WHEN PROPRS ARE CREATED
-func test_bola():
-	var element = bola.instantiate()
-	element.global_position = get_global_mouse_position()
-	get_tree().root.get_node("main").add_child(element)
-
 func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
 	# Returns a Vector2 with the angle in randians between two Vector2
 	return vector1.angle_to(vector2)
