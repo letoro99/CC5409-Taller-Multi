@@ -89,7 +89,6 @@ func _on_peer_disconnected(id: int) -> void:
 	Debug.print("peer_disconnected %d" % id)
 	
 func _on_server_disconnected() -> void:
-	Game.delete_data()
 	print("server_disconnected")
 
 func _add_player(nameString: String, color: Color, id: int):
