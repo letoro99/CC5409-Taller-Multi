@@ -49,7 +49,7 @@ length_in_cells = 2
 [node name="cellWall" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(1856, 2112)
 scale = Vector2(42, 2)
-length_in_cells = 9
+length_in_cells = 19
 
 [node name="plataformWall" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(320, 1472)
