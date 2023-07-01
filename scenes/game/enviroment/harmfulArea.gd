@@ -4,7 +4,6 @@ extends Area2D
 
 ## Signals functions
 func _on_body_entered(body: Node2D):
-	print(body)
 	if body is Character:
 		body.dealDamage(1000, self)
 

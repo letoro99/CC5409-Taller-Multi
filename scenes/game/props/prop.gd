@@ -39,7 +39,6 @@ func _physics_process(delta):
 	if linear_velocity.length() > 0 and linear_velocity.length() < 2500:
 		last_velocity = linear_velocity
 		
-		
 
 func push(direction: Vector2):
 	pass

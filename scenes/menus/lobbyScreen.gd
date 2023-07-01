@@ -19,6 +19,8 @@ const PORT = 5000
 @onready var option_button = $Pending/PanelContainer/VBoxContainer/OptionButton
 @onready var option_level = $Pending/PanelContainer/VBoxContainer/levelSelector/OptionButton
 
+@onready var timer = $Timer
+
 # { id: true }
 var status = {1 : false}
 var options_levels_path = [
@@ -26,7 +28,8 @@ var options_levels_path = [
 	"res://scenes/level/level2.tscn",	# Cave
 	"res://scenes/level/level3.tscn"	# Castle
 ]
-var level_path
+var id_level : int
+var level_path : String
 
 func _ready():
 	host.pressed.connect(_on_host_pressed)
@@ -44,10 +47,11 @@ func _ready():
 	play.pressed.connect(_on_play_pressed)
 	option_button.item_selected.connect(_character_changed)
 	option_level.item_selected.connect(_level_changed)
+	level_path = options_levels_path[0]
+	option_level.selected = 0
 	
 	Game.upnp_completed.connect(_on_upnp_completed)
-	
-	level_path = options_levels_path[0]
+	timer.timeout.connect(_on_timer_timeout)
 
 func _on_upnp_completed(state) -> void:
 	print(state)
@@ -72,6 +76,8 @@ func _on_join_pressed() -> void:
 	start.hide()
 	_add_player(user.text, color_name.get_picker().color, multiplayer.get_unique_id())
 	pending.show()
+	level_selector.show()
+	option_level.disabled = true
 
 func _on_connected_to_server() -> void:
 	Debug.print("connected_to_server")
@@ -84,12 +90,17 @@ func _on_peer_connected(id: int) -> void:
 	rpc_id(id, "send_info", { "name": user.text , "color_name": color_name.get_picker().color})
 	if multiplayer.is_server():
 		status[id] = false
+		timer.start(0.3)
 
 func _on_peer_disconnected(id: int) -> void:
 	Debug.print("peer_disconnected %d" % id)
 	
 func _on_server_disconnected() -> void:
 	print("server_disconnected")
+
+func _on_timer_timeout() -> void:
+	rpc("send_level_data", id_level)
+	rpc("send_actual_data", Game._data_players)
 
 func _add_player(nameString: String, color: Color, id: int):
 	var container = HBoxContainer.new()
@@ -149,6 +160,7 @@ func _character_changed(index: int) -> void:
 func _level_changed(index: int) -> void:
 	# Change the selected level and replicate the info to others players
 	# This functions can only be called by the server side
+	id_level = index
 	level_path = options_levels_path[index]
 	rpc("send_level_data", index)
 
@@ -193,6 +205,7 @@ func send_actual_data(data: Dictionary) -> void:
 @rpc("any_peer", "reliable")
 func send_level_data(index_level: int) -> void:
 	level_path = options_levels_path[index_level]
+	option_level.selected = index_level
 
 @rpc("any_peer", "call_local", "reliable")
 func start_game(path) -> void:

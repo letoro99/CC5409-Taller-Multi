@@ -96,4 +96,4 @@ func update_data_game() -> void:
 @rpc("reliable", "call_local", "any_peer")
 func end_game() -> void:
 	Game.delete_data()
-	get_tree().change_scene_to_file("res://scenes/mainScreen.tscn")
+	get_tree().change_scene_to_file("res://scenes/menus/lobbyScreen.tscn")
