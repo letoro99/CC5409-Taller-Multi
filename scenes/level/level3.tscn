@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://j1wk761i71h3"]
+[gd_scene load_steps=10 format=3 uid="uid://j1wk761i71h3"]
 
 [ext_resource type="Script" path="res://scenes/level/level.gd" id="1_uyyro"]
 [ext_resource type="PackedScene" uid="uid://cgmsb2w2b8xoq" path="res://scenes/game/characters/character.tscn" id="2_8pj6o"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scenes/game/HealthBars.gd" id="6_gppcr"]
 [ext_resource type="PackedScene" uid="uid://cnruh2ooy73v3" path="res://scenes/game/hud/healthbar/healthbar.tscn" id="7_gyues"]
 [ext_resource type="PackedScene" uid="uid://b1xwxcyty6yo" path="res://scenes/game/props/prop.tscn" id="8_hagta"]
+[ext_resource type="Theme" uid="uid://bpfiddf0lxbq4" path="res://assets/theme/gameTheme/themeGame.tres" id="9_luofo"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_uyyro")
@@ -203,3 +204,23 @@ prop_mass = 5.0
 [node name="prop4" parent="." instance=ExtResource("8_hagta")]
 position = Vector2(1928, 1936)
 prop_mass = 5.0
+
+[node name="EndLabel" type="MarginContainer" parent="."]
+visible = false
+offset_right = 3852.0
+offset_bottom = 2286.0
+theme = ExtResource("9_luofo")
+
+[node name="PanelContainer" type="PanelContainer" parent="EndLabel"]
+custom_minimum_size = Vector2(1000, 250)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="EndLabel/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 300
+text = "GAME!!"
+horizontal_alignment = 1
+vertical_alignment = 1

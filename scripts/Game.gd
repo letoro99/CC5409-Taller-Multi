@@ -23,6 +23,17 @@ const CHARACTER_PROFILES ={
 	7 : preload("res://assets/player/profile/pink_profile.png"),
 }
 
+const CHARACTER_NAME = {
+	0 : "Red",
+	1 : "Blue",
+	2 : "Green",
+	3 : "Yellow",
+	4 : "Brown",
+	5 : "Orange",
+	6 : "Purple",
+	7 : "Pink",
+}
+
 # Variables
 var _players : Array = []
 var _bullets : Array = []
@@ -30,6 +41,8 @@ var _name_players : Dictionary = {}
 var _data_players : Dictionary = {}
 var _death_players : int = 0
 var _thread = null
+
+var id_winner : String
 
 signal upnp_completed(error)
 

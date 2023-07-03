@@ -4,6 +4,7 @@ extends Node2D
 ## Scenes
 @export var _player_scene : PackedScene
 @export var _bullet_scene : PackedScene
+@onready var end_label = $EndLabel
 
 ## Nodes
 @onready var _players = $Players
@@ -26,12 +27,18 @@ extends Node2D
 	load("res://assets/player/character_20x20_pink.png")
 ]
 
+var _id_death_players : Array = []
+var id_winner 
+
 ### SIGNALS ###
-func _signal_death_player():
-	Debug.print("called")
+func _signal_death_player(id_player):
+	_id_death_players.append(id_player)
 	Game._death_players += 1
 	if Game._players.size() == Game._death_players + 1:
-		rpc("end_game")
+		for player in _players.get_children():
+			if player.hp > 0:
+				id_winner = player.name
+		rpc("end_game", id_winner)
 		
 ### FUNCTIONS ###
 ## Godot functions
@@ -94,6 +101,9 @@ func update_data_game() -> void:
 		_players.get_node(str(key)).pbullets[1].modulate = Game.PORTALS_COLORS[value.character][1]
 
 @rpc("reliable", "call_local", "any_peer")
-func end_game() -> void:
-	Game.delete_data()
-	get_tree().change_scene_to_file("res://scenes/menus/lobbyScreen.tscn")
+func end_game(id_winner: String) -> void:
+	Debug.print("Ganador es: " + str(id_winner))
+	end_label.visible = true
+	await get_tree().create_timer(3.8).timeout
+	Game.id_winner = id_winner
+	get_tree().change_scene_to_file("res://scenes/menus/EndScene.tscn")

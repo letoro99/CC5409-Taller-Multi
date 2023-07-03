@@ -8,7 +8,7 @@ const ACCELERATION = 35
 const DECELERATION = 2
 
 # Signals
-signal player_death
+signal player_death(id_player)
 
 # References
 @onready var healthbars = [
@@ -228,7 +228,7 @@ func hpChanged():
 	print(myHealthBar.name)
 	
 	if hp <= 0:
-		player_death.emit()
+		player_death.emit(name)
 		queue_free();
 		var explosion = load("res://scenes/game/explosion/explosion.tscn");
 		var new_explosion = explosion.instantiate();
