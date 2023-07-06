@@ -36,10 +36,8 @@ var hit_immune = 0;			# gives immunity to hits for n frames
 
 var lastDamager = null;
 
+# ===== Exports Variables and Onready ===== #
 @onready var portalsList = $Portals
-
-# RigidBody2D node for testing REMOVE IN THE FUTURE
-@export var bola : PackedScene
 @export var pbullet_scene : PackedScene
 @onready var pbullets : Array
 @onready var anim_player = $AnimationPlayer
@@ -52,6 +50,7 @@ var lastDamager = null;
 var directionMove : Vector2 
 var angleVelocity : float = 0.0 
 var initialPosition : Vector2
+var player_alive : bool = true
 
 func get_player_index():
 	var nodes = get_parent().get_children();
@@ -71,6 +70,7 @@ func _ready():
 	
 	await get_tree().create_timer(1).timeout;
 	myHealthBar = healthbars[get_player_index()];
+	player_alive = true
 
 func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
 	# Returns a Vector2 with the angle in randians between two Vector2
@@ -140,7 +140,8 @@ func _handle_movement_input() -> void:
 		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position
 		
 func _handle_inputs() -> void:
-	_handle_movement_input()
+	if player_alive:
+		_handle_movement_input()
 	
 func transportate(in_portal: Portal, out_portal: Portal):
 	# This function resolve the position and velocuity of a character when use a portal
@@ -160,7 +161,7 @@ func _physics_process(delta):
 		hit_immune = 0;
 		$Pivot/Sprite2D.visible = true;
 	
-	if is_multiplayer_authority():
+	if is_multiplayer_authority() and player_alive:
 		_handle_inputs()
 			
 		# Add the gravity.
@@ -228,12 +229,14 @@ func hpChanged():
 	print(myHealthBar.name)
 	
 	if hp <= 0:
+		player_alive = false
 		player_death.emit(name)
-		queue_free();
+		# queue_free();
 		var explosion = load("res://scenes/game/explosion/explosion.tscn");
 		var new_explosion = explosion.instantiate();
 		new_explosion.global_position = global_position;
 		get_tree().root.get_node("main").add_child(new_explosion);
+		global_position = Vector2(-1000, -1000)
 		# process death sequence
 
 func decreaseHP(amount: float):
