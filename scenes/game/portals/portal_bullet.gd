@@ -34,6 +34,7 @@ func create_portal(normal_floor: Vector2, pos_portal: Vector2):
 			portal.normal_portal = normal_floor
 			portal.global_position = pos_portal
 			portal.rotation = Vector2.UP.angle_to(normal_floor)
+		portal.canTeleport = true
 		
 		# Delete PBullet
 		global_position = Vector2.ZERO
@@ -72,3 +73,4 @@ func send_info(info: Dictionary) -> void:
 	valid_target = info.valid
 	if info.player != null:
 		portal = get_tree().root.get_node("main/Players/" + info.player + "/Portals").get_child(info.portal)
+		portal.canTeleport = true

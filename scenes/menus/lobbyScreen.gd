@@ -23,6 +23,7 @@ const PORT = 5000
 
 # { id: true }
 var status = {1 : false}
+var local_status = false
 var options_levels_path = [
 	"res://scenes/level/level1.tscn", 	# Laboratory
 	"res://scenes/level/level2.tscn",	# Cave
@@ -99,8 +100,15 @@ func _on_server_disconnected() -> void:
 	print("server_disconnected")
 
 func _on_timer_timeout() -> void:
-	rpc("send_level_data", id_level)
-	rpc("send_actual_data", Game._data_players)
+	if is_multiplayer_authority():
+		rpc("send_level_data", id_level)
+		rpc("send_actual_data", Game._data_players, status)
+
+func _get_color_status(state: bool):
+	if state:
+		return Color.GREEN
+	else:
+		return Color.RED
 
 func _add_player(nameString: String, color: Color, id: int):
 	var container = HBoxContainer.new()
@@ -136,16 +144,17 @@ func _add_player(nameString: String, color: Color, id: int):
 		option_button.set_item_disabled(id_selected, true)
 		players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[id_selected]
 		Game._data_players[id] = {"character": id_selected}
-		rpc("send_actual_data", Game._data_players)
+		rpc("send_actual_data", Game._data_players, status)
 
-func _paint_ready(id: int) -> void:
+func _paint_ready(id: int, color : Color) -> void:
 	for child in players_list.get_children():
 		if child.name == str(id):
 			child.get_node("status").color = Color.GREEN
 
 func _on_play_pressed() -> void:
-	rpc("player_ready")
-	_paint_ready(multiplayer.get_unique_id())
+	local_status = not local_status
+	rpc("player_ready", local_status)
+	_paint_ready(multiplayer.get_unique_id(), _get_color_status(local_status))
 	option_button.disabled = true
 
 func _character_changed(index: int) -> void:
@@ -170,11 +179,11 @@ func send_info(info: Dictionary) -> void:
 	_add_player(info.name, info.color_name, id)
 
 @rpc("reliable", "any_peer", "call_local")
-func player_ready() -> void:
+func player_ready(state: bool) -> void:
 	var id = multiplayer.get_remote_sender_id()
-	_paint_ready(id)
+	_paint_ready(id, _get_color_status(state))
 	if multiplayer.is_server():
-		status[id] = not status[id]
+		status[id] = true
 		var all_ok = true
 		for ok in status.values():
 			all_ok = all_ok and ok
@@ -190,10 +199,11 @@ func send_data_players(id: int, data: Dictionary) -> void:
 	option_button.set_item_disabled(data.character, true)
 	players_list.get_node(str(id) + "/character").texture = Game.CHARACTER_PROFILES[data.character]
 	
-@rpc("any_peer", "reliable")
-func send_actual_data(data: Dictionary) -> void:
+@rpc("reliable")
+func send_actual_data(data: Dictionary, status: Dictionary) -> void:
 	# Get and synchronize the info between all the players when a new peer is connected
 	Game._data_players = data
+	print(players_list.get_node(str(1) + "/status"))
 	for key in Game._data_players:
 		var value = Game._data_players[key]
 		if key == multiplayer.get_unique_id():
@@ -201,6 +211,10 @@ func send_actual_data(data: Dictionary) -> void:
 		option_button.set_item_disabled(value.character, true)
 		if players_list.get_node(str(key) + "/character") != null:
 			players_list.get_node(str(key) + "/character").texture = Game.CHARACTER_PROFILES[value.character]
+	
+	for key in status:
+		if status[key] == true:
+			players_list.get_node(str(key) + "/status").color = Color.GREEN
 
 @rpc("any_peer", "reliable")
 func send_level_data(index_level: int) -> void:

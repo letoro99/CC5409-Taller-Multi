@@ -62,7 +62,6 @@ func _ready():
 			player.get_node("Portals").get_child(1).modulate = Game.PORTALS_COLORS[Game._data_players[id].character][1]
 			player.player_death.connect(_signal_death_player)
 			
-			
 			pbullet_left.name = ("pbleft_" + str(id))
 			pbullet_right.name = ("pbright_" + str(id))
 			pbullet_left.speed = 0
@@ -104,6 +103,6 @@ func update_data_game() -> void:
 func end_game(id_winner: String) -> void:
 	Debug.print("Ganador es: " + str(id_winner))
 	end_label.visible = true
-	await get_tree().create_timer(3.8).timeout
+	await get_tree().create_timer(3.3).timeout
 	Game.id_winner = id_winner
 	get_tree().change_scene_to_file("res://scenes/menus/EndScene.tscn")

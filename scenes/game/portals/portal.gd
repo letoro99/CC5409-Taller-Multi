@@ -22,8 +22,7 @@ func disabling_portal():
 	canTeleport = true
 
 func on_area_body_entered(body: Node2D) -> void:
-	print(body.name);
-	if canTeleport and (body is Character or body is Props or body is Crate): # Can be changed with grpous ?
+	if (canTeleport and another_portal.canTeleport) and (body is Character or body is Props or body is Crate): # Can be changed with grpous ?
 
 		disabling_portal()
 		another_portal.disabling_portal()		
@@ -32,9 +31,11 @@ func on_area_body_entered(body: Node2D) -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	area.body_entered.connect(on_area_body_entered)
+	canTeleport = false
 	
 @rpc("any_peer")
 func send_info(info: Dictionary) -> void:
 	global_position = info.position
 	rotation = info.rotation
 	normal_portal = info.normal_portal
+	canTeleport = true

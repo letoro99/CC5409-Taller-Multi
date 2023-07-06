@@ -204,3 +204,4 @@ popup/item_7/id = 7
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
+one_shot = true
