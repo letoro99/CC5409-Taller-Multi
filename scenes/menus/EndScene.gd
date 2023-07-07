@@ -1,6 +1,5 @@
 extends MarginContainer
 
-@onready var lobby = $menuContainer2/Lobby
 @onready var main_menu = $menuContainer2/MainMenu
 
 @onready var label_winner = $menuContainer/MarginContainer2/Label
