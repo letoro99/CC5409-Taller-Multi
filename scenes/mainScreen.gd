@@ -21,6 +21,7 @@ func _on_exit_pressed() -> void:
 	get_tree().quit()
 
 func _ready() -> void:
+	Game.delete_data()
 	play.pressed.connect(_on_play_pressed)
 	credits.pressed.connect(_on_credits_pressed)
 	exit.pressed.connect(_on_exit_pressed)

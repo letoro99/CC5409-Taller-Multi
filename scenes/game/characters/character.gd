@@ -7,8 +7,10 @@ const JUMP_VELOCITY = -400.0
 const ACCELERATION = 35
 const DECELERATION = 2
 
-# References
+# Signals
+signal player_death(id_player)
 
+# References
 @onready var healthbars = [
 	get_tree().root.get_node("main/HealthBars/healthbar1"),
 	get_tree().root.get_node("main/HealthBars/healthbar2"),
@@ -34,10 +36,8 @@ var hit_immune = 0;			# gives immunity to hits for n frames
 
 var lastDamager = null;
 
+# ===== Exports Variables and Onready ===== #
 @onready var portalsList = $Portals
-
-# RigidBody2D node for testing REMOVE IN THE FUTURE
-@export var bola : PackedScene
 @export var pbullet_scene : PackedScene
 @onready var pbullets : Array
 @onready var anim_player = $AnimationPlayer
@@ -50,6 +50,7 @@ var lastDamager = null;
 var directionMove : Vector2 
 var angleVelocity : float = 0.0 
 var initialPosition : Vector2
+var player_alive : bool = true
 
 func get_player_index():
 	var nodes = get_parent().get_children();
@@ -59,7 +60,6 @@ func get_player_index():
 	names.sort();
 	return names.find(self.name.to_int());
 		
-
 func _ready():
 	Debug.print(name)
 	set_multiplayer_authority(name.to_int())
@@ -70,13 +70,7 @@ func _ready():
 	
 	await get_tree().create_timer(1).timeout;
 	myHealthBar = healthbars[get_player_index()];
-
-# ONLY FOR TEST RIGIDBODIES 
-# DELETE WHEN PROPRS ARE CREATED
-func test_bola():
-	var element = bola.instantiate()
-	element.global_position = get_global_mouse_position()
-	get_tree().root.get_node("main").add_child(element)
+	player_alive = true
 
 func get_angle_two_vectors(vector1: Vector2, vector2: Vector2):
 	# Returns a Vector2 with the angle in randians between two Vector2
@@ -145,9 +139,9 @@ func _handle_movement_input() -> void:
 		print(name, "resetted")
 		global_position = get_parent().get_parent().get_node('Spawner/1stSpawner').global_position
 		
-
 func _handle_inputs() -> void:
-	_handle_movement_input()
+	if player_alive:
+		_handle_movement_input()
 	
 func transportate(in_portal: Portal, out_portal: Portal):
 	# This function resolve the position and velocuity of a character when use a portal
@@ -167,7 +161,7 @@ func _physics_process(delta):
 		hit_immune = 0;
 		$Pivot/Sprite2D.visible = true;
 	
-	if is_multiplayer_authority():
+	if is_multiplayer_authority() and player_alive:
 		_handle_inputs()
 			
 		# Add the gravity.
@@ -220,7 +214,6 @@ func _physics_process(delta):
 		_set_position_portalgun()
 		rpc("_send_position_pg", {"position": get_node("Sprite_PG").global_position, "rotation": get_node("Sprite_PG").rotation_degrees, "flip": get_node("Sprite_PG").flip_h, "target": ray_cast.target_position})
 		
-
 # =============== HEALTH API =================
 func hpChanged():
 	# here we should send the signals 
@@ -236,11 +229,14 @@ func hpChanged():
 	print(myHealthBar.name)
 	
 	if hp <= 0:
-		queue_free();
+		player_alive = false
+		player_death.emit(name)
+		# queue_free();
 		var explosion = load("res://scenes/game/explosion/explosion.tscn");
 		var new_explosion = explosion.instantiate();
 		new_explosion.global_position = global_position;
 		get_tree().root.get_node("main").add_child(new_explosion);
+		global_position = Vector2(-1000, -1000)
 		# process death sequence
 
 func decreaseHP(amount: float):
@@ -262,7 +258,7 @@ func dealDamage(damage: float, damager: Node = null):
 		#damageText.damage = int(round(damage));
 			if damager:
 				lastDamager = damager;
-
+				
 @rpc("any_peer","unreliable_ordered")
 func rpc_test(texto: String) -> void:
 	Debug.print("Recibido el mensaje: %s" % texto)
@@ -279,7 +275,6 @@ func send_position(vector: Vector2, frame: int, _scale: int)  -> void:
 	global_position = vector
 	$Pivot/Sprite2D.frame = frame
 	$Pivot.scale.x = _scale
-
 
 @rpc("unreliable_ordered")	
 func _send_position_pg(data: Dictionary) -> void:
