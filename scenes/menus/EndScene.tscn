@@ -53,10 +53,6 @@ size_flags_vertical = 8
 theme = ExtResource("3_eh2ed")
 alignment = 1
 
-[node name="Lobby" type="Button" parent="menuContainer2"]
-layout_mode = 2
-text = "Return to Lobby"
-
 [node name="MainMenu" type="Button" parent="menuContainer2"]
 layout_mode = 2
 text = "Return to Main Menu"
