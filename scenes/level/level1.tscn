@@ -129,8 +129,6 @@ script = ExtResource("6_c81af")
 
 [node name="healthbar4" parent="HealthBars" instance=ExtResource("7_n8dl1")]
 
-[node name="Props" type="Node2D" parent="."]
-
 [node name="prop" parent="." instance=ExtResource("8_3wog7")]
 position = Vector2(736, 896)
 prop_mass = 5.0
