@@ -18,6 +18,8 @@ var last_pushed : Character = null ;
 
 var MAX_VELOCITY : float = 2500;
 
+var glow_step : float = 0;
+
 # Children Nodes of Props
 @onready var area = $Area2D
 
@@ -29,7 +31,22 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	# glowing effect for kinetic energy
+	var glowForce = min((linear_velocity.length()/1000),1)*abs(sin(glow_step));
+	$CardboardGlow.modulate = Color(1,1,1,glowForce);
+	
+	if linear_velocity.length() >= 1000:
+		glow_step += delta;
+		
+		
+		var rng = RandomNumberGenerator.new();
+		var particle = load("res://scenes/game/fx/particle.tscn");
+		var newParticle = particle.instantiate();
+		
+		newParticle.global_position = self.global_position;
+		newParticle.velocity = 128*Vector2.from_angle(rng.randf_range(0,2*PI));
+		
+		get_tree().root.get_node("main").add_child(newParticle);
 	
 func _physics_process(delta):
 	if is_multiplayer_authority():
@@ -58,7 +75,16 @@ func _on_body_entered(body):
 			# deal damage process!
 			body.velocity += self.linear_velocity*prop_mass;
 			body.dealDamage(damageCalculation);
-			
+		
+		if linear_velocity.length() >= 1000:
+			var rng = RandomNumberGenerator.new();
+			for i in range(36):
+				var particle = load("res://scenes/game/fx/particle.tscn");
+				var newParticle = particle.instantiate();
+				newParticle.global_position = self.global_position;
+				newParticle.velocity = 256*Vector2.from_angle(rng.randf_range(0,2*PI));
+				get_tree().root.get_node("main").add_child(newParticle);
+				
 		collided = true
 		direction = (global_position - body.global_position).normalized()
 		last_pushed = body;

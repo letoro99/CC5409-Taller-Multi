@@ -23,7 +23,7 @@ func disabling_portal():
 
 func on_area_body_entered(body: Node2D) -> void:
 	if (canTeleport and another_portal.canTeleport) and (body is Character or body is Props or body is Crate): # Can be changed with grpous ?
-
+		
 		disabling_portal()
 		another_portal.disabling_portal()		
 		body.transportate(self, another_portal)

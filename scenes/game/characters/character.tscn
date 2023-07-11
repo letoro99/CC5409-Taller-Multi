@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cgmsb2w2b8xoq"]
+[gd_scene load_steps=29 format=3 uid="uid://cgmsb2w2b8xoq"]
 
 [ext_resource type="Script" path="res://scenes/game/characters/character.gd" id="1_d68wb"]
 [ext_resource type="Texture2D" uid="uid://5lwiu0a8sl3h" path="res://assets/player/character_20x20_red.png" id="2_puqfs"]
@@ -193,8 +193,6 @@ states/walk/node = SubResource("AnimationNodeAnimation_0ttyc")
 states/walk/position = Vector2(235, 65)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_ath7d"), "idle", "walk", SubResource("AnimationNodeStateMachineTransition_idvfh"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_rgcvx"), "walk", "jump", SubResource("AnimationNodeStateMachineTransition_yi6xu"), "jump", "fall", SubResource("AnimationNodeStateMachineTransition_xoaxr"), "fall", "idle", SubResource("AnimationNodeStateMachineTransition_o5ymm"), "fall", "walk", SubResource("AnimationNodeStateMachineTransition_0sp30"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_fluir"), "walk", "fall", SubResource("AnimationNodeStateMachineTransition_vlugo")]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_2i7i8"]
-
 [node name="character" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 103
@@ -236,7 +234,6 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_arove")
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_2i7i8")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 96

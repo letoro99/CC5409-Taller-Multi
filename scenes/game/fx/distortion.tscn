@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bluv0frlaxu7m"]
+
+[ext_resource type="Texture2D" uid="uid://bs4rkm74ueip2" path="res://assets/props/cardboard_box.png" id="2_k83pu"]
+
+[node name="distortion" type="CanvasLayer"]
+
+[node name="CardboardBox" type="Sprite2D" parent="."]
+texture = ExtResource("2_k83pu")
