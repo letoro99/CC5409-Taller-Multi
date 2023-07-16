@@ -9,6 +9,7 @@ extends Node2D
 ## Nodes
 @onready var _players = $Players
 @onready var _spawners = $Spawner
+@onready var health_bars = $HealthBars
 
 ## Bullets
 @onready var _pbullets = $Pbullets
@@ -88,8 +89,9 @@ func send_info(dic: Dictionary) -> void:
 	var id = multiplayer.get_unique_id()
 	_players.get_node(str(id)).global_position = dic.position
 	
-@rpc("reliable")
+@rpc("reliable","call_local")
 func update_data_game() -> void:
+	var i = 0
 	for key in Game._data_players.keys():
 		var value = Game._data_players[key]
 		_players.get_node(str(key) + "/Pivot/Sprite2D").texture = sprites_characters[value.character]
@@ -98,6 +100,9 @@ func update_data_game() -> void:
 		_players.get_node(str(key)).pbullets = [_pbullets.get_node("pbleft_" + str(key)), _pbullets.get_node("pbright_" + str(key))]
 		_players.get_node(str(key)).pbullets[0].modulate = Game.PORTALS_COLORS[value.character][0]
 		_players.get_node(str(key)).pbullets[1].modulate = Game.PORTALS_COLORS[value.character][1]
+		
+		health_bars.get_child(i).modulate = Game.PORTALS_COLORS[value.character][0]
+		i += 1
 
 @rpc("reliable", "call_local", "any_peer")
 func end_game(id_winner: String) -> void:

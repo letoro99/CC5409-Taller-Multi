@@ -4,6 +4,7 @@ var nplayers = Game._players.size()
 var screen_width = 3200
 var y = 2240
 var bars
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	bars = [get_node("healthbar1"),get_node("healthbar2"),get_node("healthbar3"),get_node("healthbar4")]
