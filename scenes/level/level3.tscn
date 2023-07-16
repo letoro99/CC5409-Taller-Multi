@@ -85,7 +85,7 @@ length_in_cells = 7
 [node name="plataformWall9" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(1792, 192)
 scale = Vector2(24, 2)
-length_in_cells = 5
+length_in_cells = 10
 
 [node name="leftWall7" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(1088, 384)
@@ -119,7 +119,7 @@ length_in_cells = 5
 [node name="plataformWall11" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(2688, 576)
 scale = Vector2(8, 2)
-length_in_cells = 10
+length_in_cells = 3
 
 [node name="plataformWall12" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(896, 576)
@@ -134,7 +134,7 @@ length_in_cells = 4
 [node name="plataformWall14" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(3328, 192)
 scale = Vector2(16, 2)
-length_in_cells = 3
+length_in_cells = 6
 
 [node name="leftWall4" parent="Muros" instance=ExtResource("5_04k04")]
 position = Vector2(3776, 576)
