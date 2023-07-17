@@ -3,6 +3,10 @@ extends MarginContainer
 @onready var play = $menuContainer/play
 @onready var credits = $menuContainer/credits
 @onready var exit = $menuContainer/exit
+@onready var logo = $Logo
+
+var iteration : int = 0
+var diff_vector_logo : Vector2 = Vector2(0,0.15)
 
 # Paths of scenes
 var lobby_path = "res://scenes/menus/lobbyScreen.tscn"
@@ -27,3 +31,10 @@ func _ready() -> void:
 	play.pressed.connect(_on_play_pressed)
 	credits.pressed.connect(_on_credits_pressed)
 	exit.pressed.connect(_on_exit_pressed)
+	
+func _process(delta):
+	logo.global_position += diff_vector_logo
+	iteration += 1
+	if iteration % 50 == 0:
+		diff_vector_logo *= -1
+		iteration = 1
