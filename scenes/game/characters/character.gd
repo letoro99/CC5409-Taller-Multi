@@ -18,7 +18,7 @@ signal player_death(id_player)
 	get_tree().root.get_node("main/HealthBars/healthbar4")
 ]
 
-@onready var myHealthBar : Healthbar = null;
+@onready var myHealthBar = null;
 
 # Variables
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
