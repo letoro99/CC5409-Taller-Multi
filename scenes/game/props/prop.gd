@@ -19,6 +19,7 @@ var last_pushed : Character = null ;
 var MAX_VELOCITY : float = 2500;
 
 var glow_step : float = 0;
+var particle = load("res://scenes/game/fx/particle.tscn");
 
 # Children Nodes of Props
 @onready var area = $Area2D
@@ -40,7 +41,6 @@ func _process(delta):
 		
 		
 		var rng = RandomNumberGenerator.new();
-		var particle = load("res://scenes/game/fx/particle.tscn");
 		var newParticle = particle.instantiate();
 		
 		newParticle.global_position = self.global_position;

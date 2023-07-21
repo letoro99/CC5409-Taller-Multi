@@ -2,9 +2,24 @@
 
 [ext_resource type="Script" path="res://scenes/game/hud/healthbar/healthbar.gd" id="1_kdhe2"]
 
-[node name="healthbar" type="ProgressBar"]
-modulate = Color(0, 1, 0, 1)
-offset_right = 479.0
-offset_bottom = 59.0
-show_percentage = false
+[node name="healthbar" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 627.0
+offset_bottom = 111.0
 script = ExtResource("1_kdhe2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 623.0
+offset_bottom = 98.0
+color = Color(0, 0, 0, 1)
+
+[node name="healthbar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 15.0
+offset_right = 604.0
+offset_bottom = 83.0
+value = 100.0
+show_percentage = false

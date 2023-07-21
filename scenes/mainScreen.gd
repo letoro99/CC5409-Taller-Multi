@@ -3,11 +3,11 @@ extends MarginContainer
 @onready var play = $menuContainer/play
 @onready var credits = $menuContainer/credits
 @onready var exit = $menuContainer/exit
-@onready var logo = $Logo
+@onready var logo = $LogoPortalCombat
+
 
 var iteration : int = 0
-var diff_vector_logo : Vector2 = Vector2(0,0.15)
-
+var diff_vector_logo : Vector2 = Vector2(0, 0.15)
 # Paths of scenes
 var lobby_path = "res://scenes/menus/lobbyScreen.tscn"
 var credits_path = "res://scenes/menus/creditsScene.tscn"
